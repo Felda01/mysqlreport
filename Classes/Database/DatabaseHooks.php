@@ -13,7 +13,6 @@ namespace StefanFroemken\Mysqlreport\Database;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Database\PostProcessQueryHookInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
@@ -98,11 +97,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_SELECTquery_postProcessAction(&$select_fields, &$from_table, &$where_clause, &$groupBy, &$orderBy, &$limit, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($from_table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($from_table, 'tx_mysqlreport_domain_model_profile') === false) {
             $row = array();
             // Save kind of query
             $row['query_type'] = 'SELECT';
@@ -131,11 +126,8 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_INSERTquery_postProcessAction(&$table, array &$fieldsValues, &$noQuoteFields, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
+            $this->databaseConnection->setInsertedId($this->databaseConnection->getInsertedId());
             $row = array();
             // Save kind of query
             $row['query_type'] = 'INSERT';
@@ -164,11 +156,8 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_INSERTmultipleRows_postProcessAction(&$table, array &$fields, array &$rows, &$noQuoteFields, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
+            $this->databaseConnection->setInsertedId($this->databaseConnection->getInsertedId());
             $row = array();
             // Save kind of query
             $row['query_type'] = 'INSERT';
@@ -197,11 +186,8 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_UPDATEquery_postProcessAction(&$table, &$where, array &$fieldsValues, &$noQuoteFields, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
+            $this->databaseConnection->setAffectedRows($this->databaseConnection->getAffectedRows());
             $row = array();
             // Save kind of query
             $row['query_type'] = 'UPDATE';
@@ -228,11 +214,8 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_DELETEquery_postProcessAction(&$table, &$where, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
+            $this->databaseConnection->setAffectedRows($this->databaseConnection->getAffectedRows());
             $row = array();
             // Save kind of query
             $row['query_type'] = 'DELETE';
@@ -258,11 +241,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     public function exec_TRUNCATEquery_postProcessAction(&$table, \TYPO3\CMS\Core\Database\DatabaseConnection $parentObject)
     {
         // don't log profiles of this extension
-        // be login does not work, if my extension was installed. So I added a check against BE_USER
-        if (
-            strpos($table, 'tx_mysqlreport_domain_model_profile') === false &&
-            ((TYPO3_MODE === 'BE' && $GLOBALS['BE_USER']->user !== null) || TYPO3_MODE === 'FE')
-        ) {
+        if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
             $row = array();
             // Save kind of query
             $row['query_type'] = 'TRUNCATE';

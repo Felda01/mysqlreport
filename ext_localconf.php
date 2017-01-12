@@ -3,6 +3,8 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\Database\\DatabaseConnection']['className'] = 'StefanFroemken\\Mysqlreport\\Database\\DatabaseConnection';
+
 if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY])) {
     $extConf = is_array($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]) ?: unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf'][$_EXTKEY]);
     if (
