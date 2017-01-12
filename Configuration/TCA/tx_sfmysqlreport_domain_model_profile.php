@@ -4,7 +4,7 @@ return array(
         'title'	=> 'Profile',
         'label' => 'uid',
         'crdate' => 'crdate',
-        'hideTable' => TRUE,
+        'hideTable' => true,
     ),
     'interface' => array(
         'showRecordFieldList' => '',
