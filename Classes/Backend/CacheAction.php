@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * @package mysqlreport
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
  */
 class CacheAction implements ClearCacheActionsHookInterface
 {

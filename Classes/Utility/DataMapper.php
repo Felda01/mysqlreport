@@ -16,7 +16,7 @@ namespace StefanFroemken\Mysqlreport\Utility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * My own DataMapper to convert array data into domain models
  */
 class DataMapper
 {
