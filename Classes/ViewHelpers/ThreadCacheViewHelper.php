@@ -15,7 +15,6 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  */
 
 use StefanFroemken\Mysqlreport\Domain\Model\Status;
-use StefanFroemken\Mysqlreport\Domain\Model\Variables;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -44,12 +43,6 @@ class ThreadCacheViewHelper extends AbstractViewHelper
             'This argument contains all fetched status values of MySQL server',
             true
         );
-        $this->registerArgument(
-            'variables',
-            Variables::class,
-            'This argument contains all fetched variables of MySQL server',
-            true
-        );
     }
 
     /**
@@ -60,7 +53,6 @@ class ThreadCacheViewHelper extends AbstractViewHelper
     public function render()
     {
         $status = $this->arguments['status'];
-        $variables = $this->arguments['variables'];
 
         $this->templateVariableContainer->add('hitRatio', $this->getHitRatio($status));
         $content = $this->renderChildren();
