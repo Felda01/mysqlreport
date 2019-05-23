@@ -86,8 +86,7 @@ class DataMapper
                         $object->$methodName((float) $value);
                         break;
                     case 'SplObjectStorage':
-                    case 'Tx_Extbase_Persistence_ObjectStorage':
-                    case 'TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage':
+                    case ObjectStorage::class:
                         $object->$methodName($this->mapObjectStorage($propertyData['elementType'], $value));
                         break;
                     default:
@@ -101,7 +100,7 @@ class DataMapper
     }
 
     /**
-     * map a object storage with given rows
+     * Map a object storage with given rows
      *
      * @param string $className
      * @param array $rows

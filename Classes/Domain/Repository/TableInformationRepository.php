@@ -26,7 +26,7 @@ class TableInformationRepository extends AbstractRepository
     const MYISAM = 'MyISAM';
 
     /**
-     * get table informations from information_scheme
+     * get table information from information_scheme
      *
      * @return array
      */
@@ -65,7 +65,10 @@ class TableInformationRepository extends AbstractRepository
             AND ENGINE = "' . $engine . '";
         ');
         while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow('StefanFroemken\\Mysqlreport\\Domain\\Model\\TableInformation', $row);
+            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow(
+                TableInformation::class,
+                $row
+            );
         }
         return $rows;
     }
@@ -74,7 +77,6 @@ class TableInformationRepository extends AbstractRepository
      * get table information of a given table from information_scheme
      *
      * @param string $table
-     *
      * @return TableInformation[]
      */
     public function findByTable($table)
@@ -87,7 +89,10 @@ class TableInformationRepository extends AbstractRepository
         ');
         $rows = [];
         while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow('StefanFroemken\\Mysqlreport\\Domain\\Model\\TableInformation', $row);
+            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow(
+                TableInformation::class,
+                $row
+            );
         }
         return $rows;
     }
