@@ -184,9 +184,9 @@ class Report
     /**
      * Adds a calculation
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Calculation $calculation
+     * @param Calculation $calculation
      */
-    public function addCalculation(\StefanFroemken\Mysqlreport\Domain\Model\Calculation $calculation)
+    public function addCalculation(Calculation $calculation)
     {
         $this->calculations[] = $calculation;
     }

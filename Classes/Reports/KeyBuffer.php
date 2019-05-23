@@ -14,6 +14,9 @@ namespace StefanFroemken\Mysqlreport\Reports;
  * The TYPO3 project - inspiring people to share!
  */
 
+use StefanFroemken\Mysqlreport\Domain\Model\Report;
+use StefanFroemken\Mysqlreport\Domain\Repository\TableInformationRepository;
+
 /**
  * Analyse key_buffer
  */
@@ -24,12 +27,12 @@ class KeyBuffer extends AbstractReport
     /**
      * return report to MySqlReport class
      *
-     * @return \StefanFroemken\Mysqlreport\Domain\Model\Report
+     * @return Report
      */
     public function getReport()
     {
-        /** @var \StefanFroemken\Mysqlreport\Domain\Model\Report $report */
-        $report = $this->objectManager->get('StefanFroemken\\Mysqlreport\\Domain\\Model\\Report');
+        /** @var Report $report */
+        $report = $this->objectManager->get(Report::class);
         $report->setTitle($this->title);
         $this->addImportantVariables($report);
         $this->addImportantStatus($report);
@@ -75,7 +78,7 @@ class KeyBuffer extends AbstractReport
             'usedBuffer.description',
             0, 90
         );
-        $indexSize = $this->tableInformationRepository->getIndexSize(\StefanFroemken\Mysqlreport\Domain\Repository\TableInformationRepository::MYISAM);
+        $indexSize = $this->tableInformationRepository->getIndexSize(TableInformationRepository::MYISAM);
         $this->addCalculation(
             $report,
             'myIsamIndexSize.title',
@@ -90,9 +93,9 @@ class KeyBuffer extends AbstractReport
     /**
      * add important variables
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
+     * @param Report $report
      */
-    protected function addImportantVariables(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
+    protected function addImportantVariables(Report $report)
     {
         $report->addVariable('key_buffer_size', $this->formatSize($this->variables->getKeyBufferSize()));
         $report->addVariable('key_cache_block_size', $this->formatSize($this->variables->getKeyCacheBlockSize()));
@@ -101,9 +104,9 @@ class KeyBuffer extends AbstractReport
     /**
      * add important status
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
+     * @param Report $report
      */
-    protected function addImportantStatus(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
+    protected function addImportantStatus(Report $report)
     {
         $report->addStatus('Key_blocks_unused', $this->status->getKeyBlocksUnused());
         $report->addStatus('Key_Read_Requests', $this->status->getKeyReadRequests());

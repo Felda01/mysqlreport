@@ -13,7 +13,16 @@ namespace StefanFroemken\Mysqlreport\Reports;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use StefanFroemken\Mysqlreport\Domain\Model\Calculation;
+use StefanFroemken\Mysqlreport\Domain\Model\Report;
+use StefanFroemken\Mysqlreport\Domain\Model\Status;
+use StefanFroemken\Mysqlreport\Domain\Model\Variables;
+use StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository;
+use StefanFroemken\Mysqlreport\Domain\Repository\TableInformationRepository;
+use StefanFroemken\Mysqlreport\Domain\Repository\VariablesRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Analyse key_buffer
@@ -21,42 +30,58 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 abstract class AbstractReport implements ReportInterface
 {
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository
-     * @inject
+     * @var StatusRepository
      */
     protected $statusRepository;
 
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Repository\VariablesRepository
-     * @inject
+     * @var VariablesRepository
      */
     protected $variablesRepository;
 
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Repository\TableInformationRepository
-     * @inject
+     * @var TableInformationRepository
      */
     protected $tableInformationRepository;
 
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Model\Status
-     */
-    protected $status;
-
-    /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Model\Variables
-     */
-    protected $variables;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     * @inject
+     * @var ObjectManager
      */
     protected $objectManager;
 
     /**
-     * initializes this object
-     * fill status and variables
+     * @var Status
+     */
+    protected $status;
+
+    /**
+     * @var Variables
+     */
+    protected $variables;
+
+    public function injectStatusRepository(StatusRepository $statusRepository)
+    {
+        $this->statusRepository = $statusRepository;
+    }
+
+    public function injectVariablesRepository(VariablesRepository $variablesRepository)
+    {
+        $this->variablesRepository = $variablesRepository;
+    }
+
+    public function injectTableInformationRepository(TableInformationRepository $tableInformationRepository)
+    {
+        $this->tableInformationRepository = $tableInformationRepository;
+    }
+
+    public function injectObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Initializes this object
+     * Fill status and variables
      */
     public function initializeObject()
     {
@@ -65,19 +90,19 @@ abstract class AbstractReport implements ReportInterface
     }
 
     /**
-     * add calculation
+     * Add calculation
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
+     * @param Report $report
      * @param string $title
      * @param string $result
      * @param string $description
      * @param int $minAllowedValue
      * @param int $maxAllowedValue
      */
-    protected function addCalculation(\StefanFroemken\Mysqlreport\Domain\Model\Report $report, $title, $result, $description, $minAllowedValue, $maxAllowedValue)
+    protected function addCalculation(Report $report, $title, $result, $description, $minAllowedValue, $maxAllowedValue)
     {
-        /** @var \StefanFroemken\Mysqlreport\Domain\Model\Calculation $calculation */
-        $calculation = $this->objectManager->get('StefanFroemken\\Mysqlreport\\Domain\\Model\\Calculation');
+        /** @var Calculation $calculation */
+        $calculation = $this->objectManager->get(Calculation::class);
         $calculation->setTitle($title);
         $calculation->setDescription($description);
         $calculation->setMinAllowedValue($minAllowedValue);
@@ -87,7 +112,7 @@ abstract class AbstractReport implements ReportInterface
     }
 
     /**
-     * format bytes
+     * Format bytes
      *
      * @param $sizeInByte
      * @return string

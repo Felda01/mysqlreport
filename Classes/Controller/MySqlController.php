@@ -23,30 +23,20 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class MySqlController extends ActionController
 {
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Repository\StatusRepository
+     * @var StatusRepository
      */
     protected $statusRepository;
 
     /**
-     * @var \StefanFroemken\Mysqlreport\Domain\Repository\VariablesRepository
+     * @var VariablesRepository
      */
     protected $variablesRepository;
 
-    /**
-     * inject statusRepository
-     *
-     * @param StatusRepository $statusRepository
-     */
     public function injectStatusRepository(StatusRepository $statusRepository)
     {
         $this->statusRepository = $statusRepository;
     }
 
-    /**
-     * inject variablesRepository
-     *
-     * @param VariablesRepository $variablesRepository
-     */
     public function injectVariablesRepository(VariablesRepository $variablesRepository)
     {
         $this->variablesRepository = $variablesRepository;

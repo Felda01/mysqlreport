@@ -14,6 +14,9 @@ namespace StefanFroemken\Mysqlreport\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * My own DataMapper to convert array data into domain models
@@ -21,16 +24,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DataMapper
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     * @inject
+     * @var ReflectionService
      */
     protected $reflectionService;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
-     * @inject
+     * @var ObjectManager
      */
     protected $objectManager;
+
+    public function injectRefectionService(ReflectionService $reflectionService)
+    {
+        $this->reflectionService = $reflectionService;
+    }
+
+    public function injectObjectManager(ObjectManager $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
 
     /**
      * Maps a single row on an object of the given class
@@ -94,11 +105,11 @@ class DataMapper
      *
      * @param string $className
      * @param array $rows
-     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     * @return ObjectStorage
      */
     public function mapObjectStorage($className, array $rows)
     {
-        $objectStorage = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
+        $objectStorage = $this->objectManager->get(ObjectStorage::class);
         foreach ($rows as $row) {
             $objectStorage->attach($this->mapSingleRow($className, $row));
         }

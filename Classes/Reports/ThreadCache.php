@@ -13,7 +13,9 @@ namespace StefanFroemken\Mysqlreport\Reports;
  *
  * The TYPO3 project - inspiring people to share!
  */
-    
+
+use StefanFroemken\Mysqlreport\Domain\Model\Report;
+
 /**
  * Analyse key_buffer
  */
@@ -24,12 +26,12 @@ class ThreadCache extends AbstractReport
     /**
      * return report to MySqlReport class
      *
-     * @return \StefanFroemken\Mysqlreport\Domain\Model\Report
+     * @return Report
      */
     public function getReport()
     {
-        /** @var \StefanFroemken\Mysqlreport\Domain\Model\Report $report */
-        $report = $this->objectManager->get('StefanFroemken\\Mysqlreport\\Domain\\Model\\Report');
+        /** @var Report $report */
+        $report = $this->objectManager->get(Report::class);
         $report->setTitle($this->title);
         $this->addImportantVariables($report);
         $this->addImportantStatus($report);
@@ -58,9 +60,9 @@ class ThreadCache extends AbstractReport
     /**
      * add important variables
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
+     * @param Report $report
      */
-    protected function addImportantVariables(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
+    protected function addImportantVariables(Report $report)
     {
         $report->addVariable('thread_cache_size', $this->variables->getThreadCacheSize());
     }
@@ -68,9 +70,9 @@ class ThreadCache extends AbstractReport
     /**
      * add important status
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
+     * @param Report $report
      */
-    protected function addImportantStatus(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
+    protected function addImportantStatus(Report $report)
     {
         $report->addStatus('Threads_connected', $this->status->getThreadsConnected());
         $report->addStatus('Threads_created', $this->status->getThreadsCreated());

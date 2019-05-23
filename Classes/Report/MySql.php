@@ -13,8 +13,13 @@ namespace StefanFroemken\Mysqlreport\Report;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use StefanFroemken\Mysqlreport\Domain\Model\Report;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Reports\ReportInterface;
 
 /**
@@ -23,12 +28,12 @@ use TYPO3\CMS\Reports\ReportInterface;
 class MySql implements ReportInterface {
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManager
+     * @var ObjectManager
      */
     protected $objectManager;
     
     /**
-     * @var \TYPO3\CMS\Fluid\View\StandaloneView
+     * @var StandaloneView
      */
     protected $view;
     
@@ -47,12 +52,12 @@ class MySql implements ReportInterface {
      */
     public function __construct()
     {
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager $objectManager */
-        $objectManager = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-        $this->view = $objectManager->get('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        /** @var ObjectManager $objectManager */
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $this->view = $objectManager->get(StandaloneView::class);
         $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('mysqlreport') . 'Resources/Private/Templates/Reports/List.html');
-        /** @var \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer */
-        $pageRenderer = $objectManager->get('TYPO3\\CMS\\Core\\Page\\PageRenderer');
+        /** @var PageRenderer $pageRenderer */
+        $pageRenderer = $objectManager->get(PageRenderer::class);
         $pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('mysqlreport') . 'Resources/Public/Css/Main.css');
         $this->objectManager = $objectManager;
     }
@@ -73,7 +78,7 @@ class MySql implements ReportInterface {
                     $availableReportObject = $this->objectManager->get($availableReport);
                     if ($availableReportObject instanceof \StefanFroemken\Mysqlreport\Reports\ReportInterface) {
                         $report = $availableReportObject->getReport();
-                        if ($report instanceof \StefanFroemken\Mysqlreport\Domain\Model\Report) {
+                        if ($report instanceof Report) {
                             $reports[] = $report;
                         }
                     }

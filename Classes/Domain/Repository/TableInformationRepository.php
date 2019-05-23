@@ -75,7 +75,7 @@ class TableInformationRepository extends AbstractRepository
      *
      * @param string $table
      *
-     * @return \StefanFroemken\Mysqlreport\Domain\Model\TableInformation[]
+     * @return TableInformation[]
      */
     public function findByTable($table)
     {
@@ -114,5 +114,4 @@ class TableInformationRepository extends AbstractRepository
         
         return $row['indexsize'];
     }
-
 }
