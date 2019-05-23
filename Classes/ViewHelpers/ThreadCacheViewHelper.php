@@ -13,7 +13,10 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+use StefanFroemken\Mysqlreport\Domain\Model\Status;
+use StefanFroemken\Mysqlreport\Domain\Model\Variables;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to show Thread cache of MySQL
@@ -21,14 +24,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class ThreadCacheViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'status',
+            Status::class,
+            'This argument contains all fetched status values of MySQL server',
+            true
+        );
+        $this->registerArgument(
+            'variables',
+            Variables::class,
+            'This argument contains all fetched variables of MySQL server',
+            true
+        );
+    }
+
+    /**
      * analyze QueryCache parameters
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
      * @return string
      */
-    public function render(\StefanFroemken\Mysqlreport\Domain\Model\Status $status, \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables)
+    public function render()
     {
+        $status = $this->arguments['status'];
+        $variables = $this->arguments['variables'];
+
         $this->templateVariableContainer->add('hitRatio', $this->getHitRatio($status));
         $content = $this->renderChildren();
         $this->templateVariableContainer->remove('hitRatio');
@@ -39,10 +72,10 @@ class ThreadCacheViewHelper extends AbstractViewHelper
      * get hit ratio of threads cache
      * A ratio nearly 100 would be cool
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getHitRatio(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getHitRatio(Status $status)
     {
         $result = [];
         $hitRatio = 100 - (($status->getThreadsCreated() / $status->getConnections()) * 100);

@@ -13,7 +13,10 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+use StefanFroemken\Mysqlreport\Domain\Model\Status;
+use StefanFroemken\Mysqlreport\Domain\Model\Variables;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to show Query cache of MySQL
@@ -21,14 +24,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class QueryCacheViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'status',
+            Status::class,
+            'This argument contains all fetched status values of MySQL server',
+            true
+        );
+        $this->registerArgument(
+            'variables',
+            Variables::class,
+            'This argument contains all fetched variables of MySQL server',
+            true
+        );
+    }
+
+    /**
      * analyze QueryCache parameters
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
      * @return string
      */
-    public function render(\StefanFroemken\Mysqlreport\Domain\Model\Status $status, \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables)
+    public function render()
     {
+        $status = $this->arguments['status'];
+        $variables = $this->arguments['variables'];
+
         $this->templateVariableContainer->add('hitRatio', $this->getHitRatio($status));
         $this->templateVariableContainer->add('insertRatio', $this->getInsertRatio($status));
         $this->templateVariableContainer->add('pruneRatio', $this->getPruneRatio($status));
@@ -48,10 +81,10 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get hit ratio of query cache
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getHitRatio(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getHitRatio(Status $status)
     {
         $result = [];
         $hitRatio = ($status->getQcacheHits() / ($status->getQcacheHits() + $status->getComSelect())) * 100;
@@ -69,10 +102,10 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get insert ratio of query cache
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getInsertRatio(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getInsertRatio(Status $status)
     {
         $result = [];
         $insertRatio = ($status->getQcacheInserts() / ($status->getQcacheHits() + $status->getComSelect())) * 100;
@@ -90,10 +123,10 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get prune ratio of query cache
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getPruneRatio(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getPruneRatio(Status $status)
     {
         $result = [];
         $pruneRatio = ($status->getQcacheLowmemPrunes() / $status->getQcacheInserts()) * 100;
@@ -111,11 +144,11 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get avg query size in query cache
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
+     * @param Status $status
+     * @param Variables $variables
      * @return array
      */
-    protected function getAvgQuerySize(\StefanFroemken\Mysqlreport\Domain\Model\Status $status, \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables)
+    protected function getAvgQuerySize(Status $status, Variables $variables)
     {
         $result = [];
         $avgQuerySize = $this->getUsedQueryCacheSize($status, $variables) / $status->getQcacheQueriesInCache();
@@ -131,11 +164,11 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get used query size in bytes
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
+     * @param Status $status
+     * @param Variables $variables
      * @return float
      */
-    protected function getUsedQueryCacheSize(\StefanFroemken\Mysqlreport\Domain\Model\Status $status, \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables)
+    protected function getUsedQueryCacheSize(Status $status, Variables $variables)
     {
         $queryCacheSize = $variables->getQueryCacheSize() - (40 * 1024); // ~40KB are reserved by operating system
         return $queryCacheSize - $status->getQcacheFreeMemory();
@@ -144,10 +177,10 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get fragmentation ratio
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getFragmentationRatio(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getFragmentationRatio(Status $status)
     {
         $result = [];
         $fragmentation = ($status->getQcacheFreeBlocks() / ($status->getQcacheTotalBlocks() / 2)) * 100; // total blocks / 2 = maximum fragmentation
@@ -168,10 +201,10 @@ class QueryCacheViewHelper extends AbstractViewHelper
      * Quote from link: Every cached query requires a minimum of two blocks (one for the query text and one or more for the query results).
      *
      * @link: http://dev.mysql.com/doc/refman/5.0/en/query-cache-status-and-maintenance.html
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getAvgUsedBlocks(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getAvgUsedBlocks(Status $status)
     {
         $result = [];
         $usedBlocks = $status->getQcacheTotalBlocks() - $status->getQcacheFreeBlocks();

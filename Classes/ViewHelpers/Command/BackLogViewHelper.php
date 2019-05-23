@@ -15,7 +15,7 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers\Command;
  */
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to analyze MySQL Back LOg

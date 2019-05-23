@@ -13,7 +13,8 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * With this ViewHelper you can sum various values
@@ -21,18 +22,37 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class SumViewHelper extends AbstractViewHelper
 {
     /**
-     * analyze QueryCache parameters
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'profiles',
+            'array',
+            'Profile records to sum',
+            true
+        );
+        $this->registerArgument(
+            'field',
+            'string',
+            'The field of the profiles array to sum',
+            false,
+            'summed_duration'
+        );
+    }
+
+    /**
+     * Sum a field of profile records
      *
-     * @param array $profiles
-     * @param string $field
      * @return string
      */
-    public function render(array $profiles, $field = 'summed_duration')
+    public function render()
     {
         $sum = 0;
-        foreach ($profiles as $profile) {
-            $sum += $profile[$field];
+        foreach ($this->arguments['profiles'] as $profile) {
+            $sum += $profile[$this->arguments['field']];
         }
+
         return $sum;
     }
 }

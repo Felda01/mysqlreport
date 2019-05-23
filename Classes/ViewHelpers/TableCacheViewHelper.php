@@ -13,7 +13,10 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+
+use StefanFroemken\Mysqlreport\Domain\Model\Status;
+use StefanFroemken\Mysqlreport\Domain\Model\Variables;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * VIewHelper to show TableCache of MySQL
@@ -21,14 +24,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class TableCacheViewHelper extends AbstractViewHelper
 {
     /**
+     * @var bool
+     */
+    protected $escapeChildren = false;
+
+    /**
+     * @var bool
+     */
+    protected $escapeOutput = false;
+
+    /**
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'status',
+            Status::class,
+            'This argument contains all fetched status values of MySQL server',
+            true
+        );
+        $this->registerArgument(
+            'variables',
+            Variables::class,
+            'This argument contains all fetched variables of MySQL server',
+            true
+        );
+    }
+
+    /**
      * analyze QueryCache parameters
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
      * @return string
      */
-    public function render(\StefanFroemken\Mysqlreport\Domain\Model\Status $status, \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables)
+    public function render()
     {
+        $status = $this->arguments['status'];
+        $variables = $this->arguments['variables'];
+
         $this->templateVariableContainer->add('openedTableDefsEachSecond', $this->getOpenedTableDefinitionsEachSecond($status));
         $this->templateVariableContainer->add('openedTablesEachSecond', $this->getOpenedTablesEachSecond($status));
         $content = $this->renderChildren();
@@ -40,10 +73,10 @@ class TableCacheViewHelper extends AbstractViewHelper
     /**
      * get amount of opened table definitions each second
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getOpenedTableDefinitionsEachSecond(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getOpenedTableDefinitionsEachSecond(Status $status)
     {
         $result = [];
         $openedTableDefinitions = $status->getOpenedTableDefinitions() / $status->getUptime();
@@ -61,10 +94,10 @@ class TableCacheViewHelper extends AbstractViewHelper
     /**
      * get amount of opened tables each second
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
-    protected function getOpenedTablesEachSecond(\StefanFroemken\Mysqlreport\Domain\Model\Status $status)
+    protected function getOpenedTablesEachSecond(Status $status)
     {
         $result = [];
         $openedTables = $status->getOpenedTables() / $status->getUptime();

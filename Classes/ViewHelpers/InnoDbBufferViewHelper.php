@@ -16,7 +16,7 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
 use StefanFroemken\Mysqlreport\Domain\Model\Status;
 use StefanFroemken\Mysqlreport\Domain\Model\Variables;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * ViewHelper to show InnoDB buffer of MySQL
@@ -24,24 +24,44 @@ use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 class InnoDbBufferViewHelper extends AbstractViewHelper
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeChildren = false;
     
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
-    
+
     /**
-     * analyze QueryCache parameters
+     * Initialize all arguments.
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument(
+            'status',
+            Status::class,
+            'This argument contains all fetched status values of MySQL server',
+            true
+        );
+        $this->registerArgument(
+            'variables',
+            Variables::class,
+            'This argument contains all fetched variables of MySQL server',
+            true
+        );
+    }
+
+    /**
+     * Analyze QueryCache parameters
      *
-     * @param Status $status
-     * @param Variables $variables
      * @return string
      */
-    public function render(Status $status, Variables $variables)
+    public function render()
     {
+        $status = $this->arguments['status'];
+        $variables = $this->arguments['variables'];
+
         $this->templateVariableContainer->add('hitRatio', $this->getHitRatio($status));
         $this->templateVariableContainer->add('hitRatioBySF', $this->getHitRatioBySF($status));
         $this->templateVariableContainer->add('writeRatio', $this->getWriteRatio($status));
@@ -62,7 +82,7 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
      * get hit ratio of innoDb Buffer
      * A ratio of 99.9 equals 1/1000
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
     protected function getHitRatio(Status $status)
@@ -83,7 +103,7 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
     /**
      * get hit ratio of innoDb Buffer by SF
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
     protected function getHitRatioBySF(Status $status)
@@ -108,7 +128,7 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
      * get write ratio of innoDb Buffer
      * A value more higher than 1 is good
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
     protected function getWriteRatio(Status $status)
@@ -129,7 +149,7 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
     /**
      * get load of InnoDB Buffer
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
+     * @param Status $status
      * @return array
      */
     protected function getLoad(Status $status)
@@ -161,8 +181,8 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
      *
      * @link http://www.psce.com/blog/2012/04/10/what-is-the-proper-size-of-innodb-logs/
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Status $status
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
+     * @param Status $status
+     * @param Variables $variables
      * @return array
      */
     protected function getLogFileSize(Status $status, Variables $variables)
@@ -187,7 +207,7 @@ class InnoDbBufferViewHelper extends AbstractViewHelper
     /**
      * check if instances are set correct
      *
-     * @param \StefanFroemken\Mysqlreport\Domain\Model\Variables $variables
+     * @param Variables $variables
      * @return array
      */
     protected function getInstances(Variables $variables)
