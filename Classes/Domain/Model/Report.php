@@ -69,7 +69,6 @@ class Report
      * Setter for title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -94,7 +93,6 @@ class Report
      * Setter for description
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -115,7 +113,6 @@ class Report
      * Setter for status
      *
      * @param array $status
-     * @return void
      */
     public function setStatus($status)
     {
@@ -127,7 +124,6 @@ class Report
      *
      * @param string $key
      * @param string $value
-     * @return void
      */
     public function addStatus($key, $value)
     {
@@ -148,7 +144,6 @@ class Report
      * Setter for variables
      *
      * @param array $variables
-     * @return void
      */
     public function setVariables($variables)
     {
@@ -160,7 +155,6 @@ class Report
      *
      * @param string $key
      * @param string $value
-     * @return void
      */
     public function addVariable($key, $value)
     {
@@ -181,7 +175,6 @@ class Report
      * Setter for calculations
      *
      * @param array $calculations
-     * @return void
      */
     public function setCalculations($calculations)
     {
@@ -192,11 +185,9 @@ class Report
      * Adds a calculation
      *
      * @param \StefanFroemken\Mysqlreport\Domain\Model\Calculation $calculation
-     * @return void
      */
     public function addCalculation(\StefanFroemken\Mysqlreport\Domain\Model\Calculation $calculation)
     {
         $this->calculations[] = $calculation;
     }
-
 }

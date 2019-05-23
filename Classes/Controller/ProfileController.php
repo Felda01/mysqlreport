@@ -30,7 +30,6 @@ class ProfileController extends ActionController
      * inject databaseRepository
      *
      * @param DatabaseRepository $databaseRepository
-     * @return void
      */
     public function injectDatabaseRepository(DatabaseRepository $databaseRepository)
     {
@@ -39,8 +38,6 @@ class ProfileController extends ActionController
 
     /**
      * list action
-     *
-     * @return void
      */
     public function listAction()
     {
@@ -51,8 +48,6 @@ class ProfileController extends ActionController
      * show action
      *
      * @param string $uniqueIdentifier
-     *
-     * @return void
      */
     public function showAction($uniqueIdentifier)
     {
@@ -64,8 +59,6 @@ class ProfileController extends ActionController
      *
      * @param string $uniqueIdentifier
      * @param string $queryType
-     *
-     * @return void
      */
     public function queryTypeAction($uniqueIdentifier, $queryType)
     {
@@ -80,8 +73,6 @@ class ProfileController extends ActionController
      * @param string $uniqueIdentifier
      * @param string $queryType
      * @param integer $uid
-     *
-     * @return void
      */
     public function profileInfoAction($uniqueIdentifier, $queryType, $uid)
     {
@@ -92,5 +83,4 @@ class ProfileController extends ActionController
         $profiling['explain'] = unserialize($profiling['explain_query']);
         $this->view->assign('profiling', $profiling);
     }
-
 }

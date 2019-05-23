@@ -285,7 +285,6 @@ class Status
      * Setter for Aborted_Clients
      *
      * @param int $abortedClients
-     * @return void
      */
     public function setAbortedClients($abortedClients)
     {
@@ -306,7 +305,6 @@ class Status
      * Setter for Aborted_Connects
      *
      * @param int $abortedConnects
-     * @return void
      */
     public function setAbortedConnects($abortedConnects)
     {
@@ -327,7 +325,6 @@ class Status
      * Sets the comSelect
      *
      * @param int $comSelect
-     * @return void
      */
     public function setComSelect($comSelect)
     {
@@ -348,7 +345,6 @@ class Status
      * Sets the connections
      *
      * @param int $connections
-     * @return void
      */
     public function setConnections($connections)
     {
@@ -369,7 +365,6 @@ class Status
      * Setter for Created_tmp_disk_tables
      *
      * @param int $createdTmpDiskTables
-     * @return void
      */
     public function setCreatedTmpDiskTables($createdTmpDiskTables)
     {
@@ -390,7 +385,6 @@ class Status
      * Setter for Created_tmp_tables
      *
      * @param int $createdTmpTables
-     * @return void
      */
     public function setCreatedTmpTables($createdTmpTables)
     {
@@ -411,7 +405,6 @@ class Status
      * Sets the innodbBufferPoolPagesData
      *
      * @param int $innodbBufferPoolPagesData
-     * @return void
      */
     public function setInnodbBufferPoolPagesData($innodbBufferPoolPagesData)
     {
@@ -437,7 +430,6 @@ class Status
      * Sets the innodbBufferPoolPagesFlushed
      *
      * @param int $innodbBufferPoolPagesFlushed
-     * @return void
      */
     public function setInnodbBufferPoolPagesFlushed($innodbBufferPoolPagesFlushed)
     {
@@ -458,7 +450,6 @@ class Status
      * Sets the innodbBufferPoolPagesFree
      *
      * @param int $innodbBufferPoolPagesFree
-     * @return void
      */
     public function setInnodbBufferPoolPagesFree($innodbBufferPoolPagesFree)
     {
@@ -479,7 +470,6 @@ class Status
      * Sets the innodbBufferPoolPagesMisc
      *
      * @param int $innodbBufferPoolPagesMisc
-     * @return void
      */
     public function setInnodbBufferPoolPagesMisc($innodbBufferPoolPagesMisc)
     {
@@ -500,7 +490,6 @@ class Status
      * Sets the innodbBufferPoolPagesTotal
      *
      * @param int $innodbBufferPoolPagesTotal
-     * @return void
      */
     public function setInnodbBufferPoolPagesTotal($innodbBufferPoolPagesTotal)
     {
@@ -521,7 +510,6 @@ class Status
      * Setter for Innodb_buffer_pool_read_requests
      *
      * @param int $innodbBufferPoolReadRequests
-     * @return void
      */
     public function setInnodbBufferPoolReadRequests($innodbBufferPoolReadRequests)
     {
@@ -542,7 +530,6 @@ class Status
      * Setter for Innodb_buffer_pool_reads
      *
      * @param int $innodbBufferPoolReads
-     * @return void
      */
     public function setInnodbBufferPoolReads($innodbBufferPoolReads)
     {
@@ -563,7 +550,6 @@ class Status
      * Sets the innodbBufferPoolWriteRequests
      *
      * @param int $innodbBufferPoolWriteRequests
-     * @return void
      */
     public function setInnodbBufferPoolWriteRequests($innodbBufferPoolWriteRequests)
     {
@@ -584,7 +570,6 @@ class Status
      * Sets the innodbOsLogWritten
      *
      * @param int $innodbOsLogWritten
-     * @return void
      */
     public function setInnodbOsLogWritten($innodbOsLogWritten)
     {
@@ -605,7 +590,6 @@ class Status
      * Sets the innodbPageSize
      *
      * @param int $innodbPageSize
-     * @return void
      */
     public function setInnodbPageSize($innodbPageSize)
     {
@@ -626,7 +610,6 @@ class Status
      * Setter for Key_blocks_unused
      *
      * @param int $keyBlocksUnused
-     * @return void
      */
     public function setKeyBlocksUnused($keyBlocksUnused)
     {
@@ -647,7 +630,6 @@ class Status
      * Setter for Key_read_requests
      *
      * @param int $keyReadRequests
-     * @return void
      */
     public function setKeyReadRequests($keyReadRequests)
     {
@@ -668,7 +650,6 @@ class Status
      * Setter for Key_reads
      *
      * @param int $keyReads
-     * @return void
      */
     public function setKeyReads($keyReads)
     {
@@ -689,7 +670,6 @@ class Status
      * Setter for Open_table_definitions
      *
      * @param int $openTableDefinitions
-     * @return void
      */
     public function setOpenTableDefinitions($openTableDefinitions)
     {
@@ -710,7 +690,6 @@ class Status
      * Setter for Open_tables
      *
      * @param int $openTables
-     * @return void
      */
     public function setOpenTables($openTables)
     {
@@ -731,7 +710,6 @@ class Status
      * Setter for Opened_table_definitions
      *
      * @param int $openedTableDefinitions
-     * @return void
      */
     public function setOpenedTableDefinitions($openedTableDefinitions)
     {
@@ -752,7 +730,6 @@ class Status
      * Setter for Opened_tables
      *
      * @param int $openedTables
-     * @return void
      */
     public function setOpenedTables($openedTables)
     {
@@ -773,7 +750,6 @@ class Status
      * Sets the qcacheFreeBlocks
      *
      * @param int $qcacheFreeBlocks
-     * @return void
      */
     public function setQcacheFreeBlocks($qcacheFreeBlocks)
     {
@@ -794,7 +770,6 @@ class Status
      * Sets the qcacheFreeMemory
      *
      * @param int $qcacheFreeMemory
-     * @return void
      */
     public function setQcacheFreeMemory($qcacheFreeMemory)
     {
@@ -815,7 +790,6 @@ class Status
      * Sets the qcacheHits
      *
      * @param int $qcacheHits
-     * @return void
      */
     public function setQcacheHits($qcacheHits)
     {
@@ -836,7 +810,6 @@ class Status
      * Sets the qcacheInserts
      *
      * @param int $qcacheInserts
-     * @return void
      */
     public function setQcacheInserts($qcacheInserts)
     {
@@ -857,7 +830,6 @@ class Status
      * Sets the qcacheLowmemPrunes
      *
      * @param int $qcacheLowmemPrunes
-     * @return void
      */
     public function setQcacheLowmemPrunes($qcacheLowmemPrunes)
     {
@@ -878,7 +850,6 @@ class Status
      * Sets the qcacheNotCached
      *
      * @param int $qcacheNotCached
-     * @return void
      */
     public function setQcacheNotCached($qcacheNotCached)
     {
@@ -899,7 +870,6 @@ class Status
      * Sets the qcacheQueriesInCache
      *
      * @param int $qcacheQueriesInCache
-     * @return void
      */
     public function setQcacheQueriesInCache($qcacheQueriesInCache)
     {
@@ -920,7 +890,6 @@ class Status
      * Sets the qcacheTotalBlocks
      *
      * @param int $qcacheTotalBlocks
-     * @return void
      */
     public function setQcacheTotalBlocks($qcacheTotalBlocks)
     {
@@ -941,7 +910,6 @@ class Status
      * Sets the slaveRunning
      *
      * @param string $slaveRunning
-     * @return void
      */
     public function setSlaveRunning($slaveRunning)
     {
@@ -962,7 +930,6 @@ class Status
      * Setter for Threads_connected
      *
      * @param int $threadsConnected
-     * @return void
      */
     public function setThreadsConnected($threadsConnected)
     {
@@ -983,7 +950,6 @@ class Status
      * Setter for Threads_connected
      *
      * @param int $threadsCreated
-     * @return void
      */
     public function setThreadsCreated($threadsCreated)
     {
@@ -1004,7 +970,6 @@ class Status
      * Setter for Uptime
      *
      * @param int $uptime
-     * @return void
      */
     public function setUptime($uptime)
     {
@@ -1025,11 +990,9 @@ class Status
      * Sets the uptimeSinceFlushStatus
      *
      * @param int $uptimeSinceFlushStatus
-     * @return void
      */
     public function setUptimeSinceFlushStatus($uptimeSinceFlushStatus)
     {
         $this->uptimeSinceFlushStatus = $uptimeSinceFlushStatus;
     }
-
 }

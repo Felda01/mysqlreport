@@ -73,8 +73,6 @@ abstract class AbstractReport implements ReportInterface
      * @param string $description
      * @param int $minAllowedValue
      * @param int $maxAllowedValue
-     *
-     * @return void
      */
     protected function addCalculation(\StefanFroemken\Mysqlreport\Domain\Model\Report $report, $title, $result, $description, $minAllowedValue, $maxAllowedValue)
     {

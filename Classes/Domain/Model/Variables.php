@@ -194,7 +194,6 @@ class Variables
      * Sets the backLog
      *
      * @param int $backLog
-     * @return void
      */
     public function setBackLog($backLog)
     {
@@ -215,7 +214,6 @@ class Variables
      * Sets the innodbBufferPoolInstances
      *
      * @param int $innodbBufferPoolInstances
-     * @return void
      */
     public function setInnodbBufferPoolInstances($innodbBufferPoolInstances)
     {
@@ -236,7 +234,6 @@ class Variables
      * Sets the innodbBufferPoolSize
      *
      * @param int $innodbBufferPoolSize
-     * @return void
      */
     public function setInnodbBufferPoolSize($innodbBufferPoolSize)
     {
@@ -257,7 +254,6 @@ class Variables
      * Setter for innodb_flush_log_at_trx_commit
      *
      * @param int $innodbFlushLogAtTrxCommit
-     * @return void
      */
     public function setInnodbFlushLogAtTrxCommit($innodbFlushLogAtTrxCommit)
     {
@@ -278,7 +274,6 @@ class Variables
      * Setter for innodb_log_buffer_size
      *
      * @param int $innodbLogBufferSize
-     * @return void
      */
     public function setInnodbLogBufferSize($innodbLogBufferSize)
     {
@@ -299,7 +294,6 @@ class Variables
      * Sets the innodbLogFileSize
      *
      * @param int $innodbLogFileSize
-     * @return void
      */
     public function setInnodbLogFileSize($innodbLogFileSize)
     {
@@ -320,7 +314,6 @@ class Variables
      * Sets the innodbLogFilesInGroup
      *
      * @param int $innodbLogFilesInGroup
-     * @return void
      */
     public function setInnodbLogFilesInGroup($innodbLogFilesInGroup)
     {
@@ -341,7 +334,6 @@ class Variables
      * Setter for join_buffer_size
      *
      * @param int $joinBufferSize
-     * @return void
      */
     public function setJoinBufferSize($joinBufferSize)
     {
@@ -362,7 +354,6 @@ class Variables
      * Setter for key_buffer_size
      *
      * @param int $keyBufferSize
-     * @return void
      */
     public function setKeyBufferSize($keyBufferSize)
     {
@@ -383,7 +374,6 @@ class Variables
      * Setter for key_cache_block_size
      *
      * @param int $keyCacheBlockSize
-     * @return void
      */
     public function setKeyCacheBlockSize($keyCacheBlockSize)
     {
@@ -404,7 +394,6 @@ class Variables
      * Sets the logBin
      *
      * @param string $logBin
-     * @return void
      */
     public function setLogBin($logBin)
     {
@@ -425,7 +414,6 @@ class Variables
      * Setter for max_heap_table_size
      *
      * @param int $maxHeapTableSize
-     * @return void
      */
     public function setMaxHeapTableSize($maxHeapTableSize)
     {
@@ -446,7 +434,6 @@ class Variables
      * Sets the queryCacheLimit
      *
      * @param int $queryCacheLimit
-     * @return void
      */
     public function setQueryCacheLimit($queryCacheLimit)
     {
@@ -467,7 +454,6 @@ class Variables
      * Sets the queryCacheMinResUnit
      *
      * @param int $queryCacheMinResUnit
-     * @return void
      */
     public function setQueryCacheMinResUnit($queryCacheMinResUnit)
     {
@@ -488,7 +474,6 @@ class Variables
      * Sets the queryCacheSize
      *
      * @param int $queryCacheSize
-     * @return void
      */
     public function setQueryCacheSize($queryCacheSize)
     {
@@ -509,7 +494,6 @@ class Variables
      * Sets the queryCacheStripComments
      *
      * @param bool $queryCacheStripComments
-     * @return void
      */
     public function setQueryCacheStripComments($queryCacheStripComments)
     {
@@ -534,7 +518,6 @@ class Variables
      * Sets the queryCacheType
      *
      * @param bool $queryCacheType
-     * @return void
      */
     public function setQueryCacheType($queryCacheType)
     {
@@ -559,7 +542,6 @@ class Variables
      * Sets the queryCacheWlockInvalidate
      *
      * @param bool $queryCacheWlockInvalidate
-     * @return void
      */
     public function setQueryCacheWlockInvalidate($queryCacheWlockInvalidate)
     {
@@ -584,7 +566,6 @@ class Variables
      * Sets the syncBinlog
      *
      * @param bool $syncBinlog
-     * @return void
      */
     public function setSyncBinlog($syncBinlog)
     {
@@ -609,7 +590,6 @@ class Variables
      * Setter for tableDefinitionCache
      *
      * @param int $tableDefinitionCache
-     * @return void
      */
     public function setTableDefinitionCache($tableDefinitionCache)
     {
@@ -630,7 +610,6 @@ class Variables
      * Setter for tableOpenCache
      *
      * @param int $tableOpenCache
-     * @return void
      */
     public function setTableOpenCache($tableOpenCache)
     {
@@ -651,7 +630,6 @@ class Variables
      * Setter for thread_cache_size
      *
      * @param int $threadCacheSize
-     * @return void
      */
     public function setThreadCacheSize($threadCacheSize)
     {
@@ -672,11 +650,9 @@ class Variables
      * Setter for tmp_table_size
      *
      * @param int $tmpTableSize
-     * @return void
      */
     public function setTmpTableSize($tmpTableSize)
     {
         $this->tmpTableSize = $tmpTableSize;
     }
-
 }

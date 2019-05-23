@@ -73,7 +73,6 @@ class Calculation
      * Setter for title
      *
      * @param string $title
-     * @return void
      */
     public function setTitle($title)
     {
@@ -98,7 +97,6 @@ class Calculation
      * Setter for description
      *
      * @param string $description
-     * @return void
      */
     public function setDescription($description)
     {
@@ -119,7 +117,6 @@ class Calculation
      * Setter for result
      *
      * @param string $result
-     * @return void
      */
     public function setResult($result)
     {
@@ -140,7 +137,6 @@ class Calculation
      * Setter for minAllowedValue
      *
      * @param int $minAllowedValue
-     * @return void
      */
     public function setMinAllowedValue($minAllowedValue)
     {
@@ -161,7 +157,6 @@ class Calculation
      * Setter for maxAllowedValue
      *
      * @param int $maxAllowedValue
-     * @return void
      */
     public function setMaxAllowedValue($maxAllowedValue)
     {

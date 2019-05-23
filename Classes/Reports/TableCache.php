@@ -79,7 +79,6 @@ class TableCache extends AbstractReport {
      * add important variables
      *
      * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
-     * @return void
      */
     protected function addImportantVariables(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
     {
@@ -91,7 +90,6 @@ class TableCache extends AbstractReport {
      * add important status
      *
      * @param \StefanFroemken\Mysqlreport\Domain\Model\Report $report
-     * @return void
      */
     protected function addImportantStatus(\StefanFroemken\Mysqlreport\Domain\Model\Report $report)
     {

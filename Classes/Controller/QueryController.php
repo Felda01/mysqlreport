@@ -30,7 +30,6 @@ class QueryController extends ActionController
      * inject databaseRepository
      *
      * @param DatabaseRepository $databaseRepository
-     * @return void
      */
     public function injectDatabaseRepository(DatabaseRepository $databaseRepository)
     {
@@ -39,8 +38,6 @@ class QueryController extends ActionController
 
     /**
      * filesort action
-     *
-     * @return void
      */
     public function filesortAction()
     {
@@ -49,8 +46,6 @@ class QueryController extends ActionController
 
     /**
      * using full table scan action
-     *
-     * @return void
      */
     public function fullTableScanAction()
     {

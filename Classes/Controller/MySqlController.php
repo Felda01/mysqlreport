@@ -36,7 +36,6 @@ class MySqlController extends ActionController
      * inject statusRepository
      *
      * @param StatusRepository $statusRepository
-     * @return void
      */
     public function injectStatusRepository(StatusRepository $statusRepository)
     {
@@ -47,7 +46,6 @@ class MySqlController extends ActionController
      * inject variablesRepository
      *
      * @param VariablesRepository $variablesRepository
-     * @return void
      */
     public function injectVariablesRepository(VariablesRepository $variablesRepository)
     {
@@ -56,8 +54,6 @@ class MySqlController extends ActionController
 
     /**
      * introduction page
-     *
-     * @return void
      */
     public function indexAction()
     {
@@ -67,8 +63,6 @@ class MySqlController extends ActionController
 
     /**
      * query cache action
-     *
-     * @return void
      */
     public function queryCacheAction()
     {
@@ -78,8 +72,6 @@ class MySqlController extends ActionController
 
     /**
      * innoDb Buffer action
-     *
-     * @return void
      */
     public function innoDbBufferAction()
     {
@@ -89,8 +81,6 @@ class MySqlController extends ActionController
 
     /**
      * thread cache action
-     *
-     * @return void
      */
     public function threadCacheAction()
     {
@@ -100,13 +90,10 @@ class MySqlController extends ActionController
 
     /**
      * table cache action
-     *
-     * @return void
      */
     public function tableCacheAction()
     {
         $this->view->assign('status', $this->statusRepository->findAll());
         $this->view->assign('variables', $this->variablesRepository->findAll());
     }
-
 }

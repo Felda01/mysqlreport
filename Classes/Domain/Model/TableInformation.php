@@ -89,7 +89,6 @@ class TableInformation
      * Setter for tableName
      *
      * @param string $tableName
-     * @return void
      */
     public function setTableName($tableName)
     {
@@ -110,7 +109,6 @@ class TableInformation
      * Setter for engine
      *
      * @param string $engine
-     * @return void
      */
     public function setEngine($engine)
     {
@@ -131,7 +129,6 @@ class TableInformation
      * Setter for tableRows
      *
      * @param int $tableRows
-     * @return void
      */
     public function setTableRows($tableRows)
     {
@@ -152,7 +149,6 @@ class TableInformation
      * Setter for avgRowLength
      *
      * @param int $avgRowLength
-     * @return void
      */
     public function setAvgRowLength($avgRowLength)
     {
@@ -173,7 +169,6 @@ class TableInformation
      * Setter for dataLength
      *
      * @param int $dataLength
-     * @return void
      */
     public function setDataLength($dataLength)
     {
@@ -194,7 +189,6 @@ class TableInformation
      * Setter for indexLength
      *
      * @param int $indexLength
-     * @return void
      */
     public function setIndexLength($indexLength)
     {
@@ -215,7 +209,6 @@ class TableInformation
      * Setter for dataFree
      *
      * @param int $dataFree
-     * @return void
      */
     public function setDataFree($dataFree)
     {
@@ -236,11 +229,9 @@ class TableInformation
      * Setter for autoIncrement
      *
      * @param int $autoIncrement
-     * @return void
      */
     public function setAutoIncrement($autoIncrement)
     {
         $this->autoIncrement = $autoIncrement;
     }
-
 }
