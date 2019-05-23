@@ -14,30 +14,35 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use StefanFroemken\Mysqlreport\Utility\DataMapper;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Abstract Repository
  */
 abstract class AbstractRepository
 {
     /**
-     * @var \StefanFroemken\Mysqlreport\Utility\DataMapper
-     * @inject
+     * @var DataMapper
      */
     protected $dataMapper;
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected $databaseConnection;
-
-    /**
-     * inject Database Connection
+     * Inject DataMapper
      *
-     * @return void
+     * @param DataMapper $dataMapper
      */
-    public function initializeObject()
+    public function injectDataMapper(DataMapper $dataMapper)
     {
-        $this->databaseConnection = $GLOBALS['TYPO3_DB'];
+        $this->dataMapper = $dataMapper;
     }
 
+    /**
+     * @return ConnectionPool
+     */
+    public function getConnectionPool(): ConnectionPool
+    {
+        return GeneralUtility::makeInstance(ConnectionPool::class);
+    }
 }

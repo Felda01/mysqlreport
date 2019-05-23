@@ -13,7 +13,10 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-    
+
+use StefanFroemken\Mysqlreport\Domain\Model\TableInformation;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 /**
  * This model saves the mysql status
  */
@@ -29,15 +32,19 @@ class TableInformationRepository extends AbstractRepository
      */
     public function findAll()
     {
+        $schemaManager = $this
+            ->getConnectionPool()
+            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)
+            ->getSchemaManager();
+
         $rows = [];
-        $res = $this->databaseConnection->sql_query('
-            SELECT *
-            FROM information_schema.TABLES
-            WHERE table_schema = "' . TYPO3_db . '";
-        ');
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
-            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow('StefanFroemken\\Mysqlreport\\Domain\\Model\\TableInformation', $row);
-        }
+        $rows = $schemaManager->listTableNames();
+        /*while ($row = $statement->fetch()) {
+            $rows[$row['TABLE_NAME']] = $this->dataMapper->mapSingleRow(
+                TableInformation::class,
+                $row
+            );
+        }*/
         return $rows;
     }
 

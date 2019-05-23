@@ -14,6 +14,9 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
+use StefanFroemken\Mysqlreport\Domain\Model\Status;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 /**
  * This model saves the mysql status
  */
@@ -22,16 +25,24 @@ class StatusRepository extends AbstractRepository
     /**
      * get status from MySql
      *
-     * @return \StefanFroemken\Mysqlreport\Domain\Model\Status
+     * @return Status
      */
     public function findAll()
     {
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('SHOW GLOBAL STATUS;');
+
         $rows = [];
-        $res = $this->databaseConnection->sql_query('SHOW GLOBAL STATUS;');
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $rows[strtolower($row['Variable_name'])] = $row['Value'];
         }
-        return $this->dataMapper->mapSingleRow('StefanFroemken\\Mysqlreport\\Domain\\Model\\Status', $rows);
-    }
 
+        /** @var Status $status */
+        $status = $this->dataMapper->mapSingleRow(
+            Status::class,
+            $rows
+        );
+
+        return $status;
+    }
 }

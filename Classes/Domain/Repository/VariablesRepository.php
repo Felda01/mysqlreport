@@ -13,7 +13,10 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-    
+
+use StefanFroemken\Mysqlreport\Domain\Model\Variables;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 /**
  * This model saves the mysql status
  */
@@ -22,16 +25,24 @@ class VariablesRepository extends AbstractRepository
     /**
      * get status from MySql
      *
-     * @return \StefanFroemken\Mysqlreport\Domain\Model\Variables
+     * @return Variables
      */
     public function findAll()
     {
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('SHOW GLOBAL VARIABLES;');
+
         $rows = [];
-        $res = $this->databaseConnection->sql_query('SHOW GLOBAL VARIABLES;');
-        while ($row = $this->databaseConnection->sql_fetch_assoc($res)) {
+        while ($row = $statement->fetch()) {
             $rows[strtolower($row['Variable_name'])] = $row['Value'];
         }
-        return $this->dataMapper->mapSingleRow('StefanFroemken\\Mysqlreport\\Domain\\Model\\Variables', $rows);
-    }
 
+        /** @var Variables $variables */
+        $variables = $this->dataMapper->mapSingleRow(
+            Variables::class,
+            $rows
+        );
+
+        return $variables;
+    }
 }
