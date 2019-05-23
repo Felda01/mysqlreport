@@ -102,7 +102,7 @@ class DatabaseRepository extends AbstractRepository
             WHERE uid = ' . $uid . ';
         ');
 
-        return $statement->fetchAll();
+        return $statement->fetch();
     }
 
     /**
