@@ -30,14 +30,14 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     /**
      * @var array
      */
-    protected $extConf = array();
+    protected $extConf = [];
 
     /**
      * save profiles
      *
      * @var array
      */
-    protected $profiles = array();
+    protected $profiles = [];
 
     /**
      * constructor of this class
@@ -75,7 +75,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
         if (!empty($this->profiles)) {
             $this->databaseConnection->exec_INSERTmultipleRows(
                 'tx_mysqlreport_domain_model_profile',
-                array('query_type', 'duration', 'profile', 'query', 'explain_query', 'not_using_index', 'using_fulltable', 'pid', 'mode', 'unique_call_identifier', 'crdate', 'query_id'),
+                ['query_type', 'duration', 'profile', 'query', 'explain_query', 'not_using_index', 'using_fulltable', 'pid', 'mode', 'unique_call_identifier', 'crdate', 'query_id'],
                 $this->profiles
             );
         }
@@ -98,7 +98,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     {
         // don't log profiles of this extension
         if (strpos($from_table, 'tx_mysqlreport_domain_model_profile') === false) {
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'SELECT';
             // save profiling information
@@ -128,7 +128,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
         // don't log profiles of this extension
         if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
             $this->databaseConnection->setInsertedId($this->databaseConnection->getInsertedId());
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'INSERT';
             // save profiling information
@@ -158,7 +158,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
         // don't log profiles of this extension
         if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
             $this->databaseConnection->setInsertedId($this->databaseConnection->getInsertedId());
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'INSERT';
             // save profiling information
@@ -188,7 +188,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
         // don't log profiles of this extension
         if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
             $this->databaseConnection->setAffectedRows($this->databaseConnection->getAffectedRows());
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'UPDATE';
             // save profiling information
@@ -216,7 +216,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
         // don't log profiles of this extension
         if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
             $this->databaseConnection->setAffectedRows($this->databaseConnection->getAffectedRows());
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'DELETE';
             // save profiling information
@@ -242,7 +242,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
     {
         // don't log profiles of this extension
         if (strpos($table, 'tx_mysqlreport_domain_model_profile') === false) {
-            $row = array();
+            $row = [];
             // Save kind of query
             $row['query_type'] = 'TRUNCATE';
             // save profiling information
@@ -266,7 +266,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
      */
     protected function addProfilingInformation(array &$row)
     {
-        $profile = array();
+        $profile = [];
         $duration = 0;
         // @ToDo: This line deletes last_insert_id() Maybe we should extend DatabaseConnection and replace that function
         $mysqlResult = $this->databaseConnection->sql_query('SHOW PROFILE');
@@ -286,7 +286,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
      */
     protected function addExplainInformation(&$row)
     {
-        $row['explain_query'] = serialize(array());
+        $row['explain_query'] = serialize([]);
         $row['not_using_index'] = 0;
         $row['using_fulltable'] = 0;
 
@@ -298,7 +298,7 @@ class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
             $row['query_type'] === 'SELECT' &&
             strpos($row['query'], '?') === false
         ) {
-            $explain = array();
+            $explain = [];
             $notUsingIndex = false;
             $usingFullTable = false;
             $showExplain = $this->databaseConnection->sql_query('EXPLAIN ' . $row['query']);

@@ -9,15 +9,15 @@ if (TYPO3_MODE === 'BE') {
         'system', // Make module a submodule of 'web'
         'mysql', // Submodule key
         '', // Position
-        array(
+        [
             'MySql' => 'index, queryCache, innoDbBuffer, threadCache, tableCache, report',
             'Profile' => 'list, show, queryType, profileInfo',
             'Query' => 'filesort, fullTableScan',
-        ),
-        array(
+        ],
+        [
             'access' => 'user,group',
             'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
             'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_report.xlf',
-        )
+        ]
     );
 }

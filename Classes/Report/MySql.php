@@ -35,12 +35,12 @@ class MySql implements ReportInterface {
     /**
      * @var array
      */
-    protected $tableInformation = array();
+    protected $tableInformation = [];
     
     /**
      * @var array
      */
-    protected $columns = array();
+    protected $columns = [];
     
     /**
      * as long as this class was NOT called over ObjectManager we have to implement properties on our own
@@ -64,7 +64,7 @@ class MySql implements ReportInterface {
      */
     public function getReport()
     {
-        $reports = array();
+        $reports = [];
         $availableReports = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['mysqlreport']['reports'];
         if (is_array($availableReports) && count($availableReports)) {
             foreach ($availableReports as $availableReport) {

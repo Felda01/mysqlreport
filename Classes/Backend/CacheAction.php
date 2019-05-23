@@ -49,20 +49,20 @@ class CacheAction implements ClearCacheActionsHookInterface
      */
     public function manipulateCacheActions(&$cacheActions, &$optionValues)
     {
-        $cacheAction = array(
+        $cacheAction = [
             'id' => 'mysqlprofiles',
             'title' => 'Clear MySQL Profiles',
             'description' => 'Clear collected profile records of extension mysqlreport. This table can grow very fast, so maybe it is good to clear this table.',
-        );
+        ];
         if (GeneralUtility::compat_version('7.6')) {
             /** @var IconFactory $iconFactory */
             $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $cacheAction['icon'] = $iconFactory->getIcon('actions-system-cache-clear-impact-high');
-            $cacheAction['href'] = BackendUtility::getModuleUrl('tce_db', array(
+            $cacheAction['href'] = BackendUtility::getModuleUrl('tce_db', [
                 'vC' => $this->getBackendUser()->veriCode(),
                 'cacheCmd' => 'mysqlprofiles',
                 'ajaxCall' => 1
-            ));
+            ]);
         } else {
             $cacheAction['icon'] = IconUtility::getSpriteIcon('actions-system-cache-clear-impact-high');
             $cacheAction['href'] = 'tce_db.php?vC=' . $this->getBackendUser()->veriCode() . '&cacheCmd=mysqlprofiles&ajaxCall=1' . BackendUtility::getUrlToken('tceAction');
@@ -87,7 +87,7 @@ class CacheAction implements ClearCacheActionsHookInterface
      * @param array $params
      * @return void
      */
-    public function clearProfiles($params = array())
+    public function clearProfiles($params = [])
     {
         if ($params['cacheCmd'] === 'mysqlprofiles') {
             $this->databaseConnection->exec_TRUNCATEquery('tx_mysqlreport_domain_model_profile');

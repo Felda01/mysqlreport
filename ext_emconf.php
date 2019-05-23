@@ -10,7 +10,7 @@
  * writing. "version" and "dependencies" must not be touched!
  ***************************************************************/
 
-$EM_CONF[$_EXTKEY] = array (
+$EM_CONF[$_EXTKEY] = [
     'title' => 'MySQL Report',
     'description' => 'Analyze and profile your databases queries made via $GLOBALS[\'TYPO3_DB\']',
     'category' => 'misc',
@@ -28,13 +28,13 @@ $EM_CONF[$_EXTKEY] = array (
     'lockType' => '',
     'author_company' => '',
     'version' => '1.0.0',
-    'constraints' =>array (
-        'depends' => array(
+    'constraints' => [
+        'depends' => [
             'typo3' => '8.7.14-9.5.99'
-        ),
-        'conflicts' => array (
-        ),
-        'suggests' => array (
-        ),
-    ),
-);
+        ],
+        'conflicts' => [
+        ],
+        'suggests' => [
+        ],
+    ],
+];
