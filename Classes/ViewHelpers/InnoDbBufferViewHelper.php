@@ -19,7 +19,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * @package mysqlreport
+ * ViewHelper to show InnoDB buffer of MySQL
  */
 class InnoDbBufferViewHelper extends AbstractViewHelper
 {

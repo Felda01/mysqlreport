@@ -17,7 +17,7 @@ use StefanFroemken\Mysqlreport\Domain\Repository\DatabaseRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * @package mysqlreport
+ * Controller to collect records with query profile information
  */
 class ProfileController extends ActionController
 {

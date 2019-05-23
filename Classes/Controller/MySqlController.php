@@ -18,7 +18,7 @@ use StefanFroemken\Mysqlreport\Domain\Repository\VariablesRepository;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * @package mysqlreport
+ * Controller to collect data from current MySQL server
  */
 class MySqlController extends ActionController
 {

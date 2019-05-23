@@ -18,7 +18,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * @package mysqlreport
+ * ViewHelper to analyze MySQL Back LOg
  */
 class BackLogViewHelper extends AbstractViewHelper
 {

@@ -16,7 +16,7 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * @package mysqlreport
+ * With this ViewHelper you can sum various values
  */
 class SumViewHelper extends AbstractViewHelper
 {

@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
- * @package mysqlreport
+ * This class hooks into ClearCache system of TYPO3 to remove our logged records
  */
 class CacheAction implements ClearCacheActionsHookInterface
 {

@@ -17,7 +17,7 @@ namespace StefanFroemken\Mysqlreport\Database;
 /**
  * Class DatabaseConnection
  *
- * @package StefanFroemken\Core\Database
+ * @deprecated Removed in TYPO3 9
  */
 class DatabaseConnection extends \TYPO3\CMS\Core\Database\DatabaseConnection
 {

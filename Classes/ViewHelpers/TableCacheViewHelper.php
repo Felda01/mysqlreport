@@ -16,7 +16,7 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * @package mysqlreport
+ * VIewHelper to show TableCache of MySQL
  */
 class TableCacheViewHelper extends AbstractViewHelper
 {

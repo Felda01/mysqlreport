@@ -17,7 +17,7 @@ use TYPO3\CMS\Core\Database\PostProcessQueryHookInterface;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
- * @package mysqlreport
+ * Class which hooks into DB connection of TYPO3
  */
 class DatabaseHooks implements PostProcessQueryHookInterface, SingletonInterface
 {
