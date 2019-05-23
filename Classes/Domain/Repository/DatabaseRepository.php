@@ -13,12 +13,19 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-    
+
+use TYPO3\CMS\Core\Database\ConnectionPool;
+
 /**
  * This model saves the mysql status
  */
 class DatabaseRepository extends AbstractRepository
 {
+    /**
+     * @var string
+     */
+    protected $tableName = 'tx_mysqlreport_domain_model_profile';
+
     /**
      * get grouped profilings grouped by unique identifier
      * and ordered by crdate descending
@@ -27,12 +34,16 @@ class DatabaseRepository extends AbstractRepository
      */
     public function findProfilingsForCall()
     {
-        return $this->databaseConnection->exec_SELECTgetRows(
-            'crdate, unique_call_identifier, mode, SUM(duration) as duration, COUNT(*) as amount',
-            'tx_mysqlreport_domain_model_profile',
-            '',
-            'unique_call_identifier', 'crdate DESC', 100
-        );
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT crdate, unique_call_identifier, mode, SUM(duration) as duration, COUNT(*) as amount
+            FROM tx_mysqlreport_domain_model_profile
+            GROUP BY unique_call_identifier
+            ORDER BY crdate DESC
+            LIMIT 100;
+        ');
+
+        return $statement->fetchAll();
     }
 
     /**
@@ -43,12 +54,16 @@ class DatabaseRepository extends AbstractRepository
      */
     public function getProfilingByUniqueIdentifier($uniqueIdentifier)
     {
-        return $this->databaseConnection->exec_SELECTgetRows(
-            'query_type, unique_call_identifier, SUM(duration) as duration, COUNT(*) as amount',
-            'tx_mysqlreport_domain_model_profile',
-            'unique_call_identifier = "' . $uniqueIdentifier . '"',
-            'query_type', 'duration DESC', ''
-        );
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT query_type, unique_call_identifier, SUM(duration) as duration, COUNT(*) as amount
+            FROM tx_mysqlreport_domain_model_profile
+            WHERE unique_call_identifier = "' . $uniqueIdentifier . '"
+            GROUP BY query_type
+            ORDER BY duration DESC;
+        ');
+
+        return $statement->fetchAll();
     }
 
     /**
@@ -60,29 +75,34 @@ class DatabaseRepository extends AbstractRepository
      */
     public function getProfilingsByQueryType($uniqueIdentifier, $queryType)
     {
-        return $this->databaseConnection->exec_SELECTgetRows(
-            'uid, query_id, LEFT(query, 120) as query, not_using_index, duration',
-            'tx_mysqlreport_domain_model_profile',
-            'unique_call_identifier = "' . $uniqueIdentifier . '"
-            AND query_type = "' . $queryType . '"',
-            '', 'duration DESC', ''
-        );
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT uid, query_id, LEFT(query, 120) as query, not_using_index, duration
+            FROM tx_mysqlreport_domain_model_profile
+            WHERE unique_call_identifier = "' . $uniqueIdentifier . '"
+            AND query_type = "' . $queryType . '"
+            ORDER BY duration DESC;
+        ');
+
+        return $statement->fetchAll();
     }
 
     /**
-     * get profiling infomations by uid
+     * get profiling infomation by uid
      *
      * @param string $uid
      * @return array
      */
     public function getProfilingByUid($uid)
     {
-        return $this->databaseConnection->exec_SELECTgetSingleRow(
-            'query, query_type, profile, explain_query, not_using_index, duration',
-            'tx_mysqlreport_domain_model_profile',
-            'uid = ' . $uid,
-            '', '', ''
-        );
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT query, query_type, profile, explain_query, not_using_index, duration
+            FROM tx_mysqlreport_domain_model_profile
+            WHERE uid = ' . $uid . ';
+        ');
+
+        return $statement->fetchAll();
     }
 
     /**
@@ -92,12 +112,16 @@ class DatabaseRepository extends AbstractRepository
      */
     public function findQueriesWithFilesort()
     {
-        return $this->databaseConnection->exec_SELECTgetRows(
-            'LEFT(query, 255) as query, explain_query, duration',
-            'tx_mysqlreport_domain_model_profile',
-            'explain_query LIKE "%using filesort%"',
-            '', 'duration DESC', '100'
-        );
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT LEFT(query, 255) as query, explain_query, duration
+            FROM tx_mysqlreport_domain_model_profile
+            WHERE explain_query LIKE "%using filesort%"
+            ORDER BY duration DESC
+            LIMIT 100;
+        ');
+
+        return $statement->fetchAll();
     }
 
     /**
@@ -107,12 +131,15 @@ class DatabaseRepository extends AbstractRepository
      */
     public function findQueriesWithFullTableScan()
     {
-        return $this->databaseConnection->exec_SELECTgetRows(
-            'LEFT(query, 255) as query, explain_query, duration',
-            'tx_mysqlreport_domain_model_profile',
-            'using_fulltable = 1',
-            '', 'duration DESC', '100'
-        );
-    }
+        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $statement = $connection->query('
+            SELECT LEFT(query, 255) as query, explain_query, duration
+            FROM tx_mysqlreport_domain_model_profile
+            WHERE using_fulltable = 1
+            ORDER BY duration DESC
+            LIMIT 100;
+        ');
 
+        return $statement->fetchAll();
+    }
 }
