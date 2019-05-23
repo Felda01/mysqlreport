@@ -6,13 +6,16 @@
 
 			<trans-unit id="tx_mysqlreport_domain_model_profile">
 				<source>Profile</source>
+				<target>Profil</target>
 			</trans-unit>
 
 			<trans-unit id="module.clearCache.title">
 				<source>Clear MySQL Profiles</source>
+				<target>Lösche MySQL Reporte</target>
 			</trans-unit>
 			<trans-unit id="module.clearCache.description">
 				<source>Clear collected profile records of extension mysqlreport. As this table can grow very fast, it may help to clear this table from time to time.</source>
+				<target>Lösche die gesammelten MySQL Reporte der Extension mysqlreport. Da diese Tabelle sehr groß werden kann macht es Sinn diese hin und wieder zu leeren.</target>
 			</trans-unit>
 
 		</body>
