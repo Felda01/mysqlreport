@@ -6,6 +6,8 @@ CREATE TABLE tx_mysqlreport_domain_model_profile (
 	pid int(11) DEFAULT '0' NOT NULL,
 
 	query_id int(11) unsigned DEFAULT '0',
+	ip varchar(45) DEFAULT '' NOT NULL,
+	referer text,
 	request text,
 	mode char(3) DEFAULT '' NOT NULL,
 	unique_call_identifier varchar(15) DEFAULT '' NOT NULL,

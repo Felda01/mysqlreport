@@ -55,6 +55,8 @@ class RegisterDatabaseLoggerHook implements SingletonInterface
             foreach ($sqlLogger->queries as $key => $loggedQuery) {
                 $queriesToStore[] = [
                     'pid' => $pid,
+                    'ip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                    'referer' => GeneralUtility::getIndpEnv('HTTP_REFERER'),
                     'request' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
                     'query_type' => GeneralUtility::trimExplode(' ', $loggedQuery['sql'], true, 2)[0],
                     'duration' => $loggedQuery['executionMS'],
@@ -75,6 +77,8 @@ class RegisterDatabaseLoggerHook implements SingletonInterface
                 $queriesToStore,
                 [
                     'pid',
+                    'ip',
+                    'referer',
                     'request',
                     'query_type',
                     'duration',
