@@ -12,7 +12,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'MySQL Report',
-    'description' => 'Analyze and profile your databases queries made via $GLOBALS[\'TYPO3_DB\']',
+    'description' => 'Analyze and profile all DB Queries build with ConnectionPool (Doctrine)',
     'category' => 'misc',
     'author' => 'Stefan Froemken',
     'author_email' => 'froemken@gmail.com',

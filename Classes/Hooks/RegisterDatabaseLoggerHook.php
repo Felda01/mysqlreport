@@ -40,7 +40,7 @@ class RegisterDatabaseLoggerHook implements SingletonInterface
     public function __destruct()
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $connection = $connectionPool->getConnectionForTable('tx_mysqlreport_domain_model_profile');
 
         // do not log our insert queries
         $sqlLogger = clone $connection->getConfiguration()->getSQLLogger();
@@ -55,6 +55,7 @@ class RegisterDatabaseLoggerHook implements SingletonInterface
             foreach ($sqlLogger->queries as $key => $loggedQuery) {
                 $queriesToStore[] = [
                     'pid' => $pid,
+                    'request' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
                     'query_type' => GeneralUtility::trimExplode(' ', $loggedQuery['sql'], true, 2)[0],
                     'duration' => $loggedQuery['executionMS'],
                     'query' => $connection->quote($loggedQuery['sql']),
@@ -69,16 +70,25 @@ class RegisterDatabaseLoggerHook implements SingletonInterface
                 ];
             }
 
-            /*$connection->bulkInsert(
+            $connection->bulkInsert(
                 'tx_mysqlreport_domain_model_profile',
-                $queriesToStore
-            );*/
-            foreach ($queriesToStore as $query) {
-                $connection->insert(
-                    'tx_mysqlreport_domain_model_profile',
-                    $query
-                );
-            }
+                $queriesToStore,
+                [
+                    'pid',
+                    'request',
+                    'query_type',
+                    'duration',
+                    'query',
+                    'profile',
+                    'explain_query',
+                    'not_using_index',
+                    'using_fulltable',
+                    'mode',
+                    'unique_call_identifier',
+                    'crdate',
+                    'query_id'
+                ]
+            );
         }
     }
 }

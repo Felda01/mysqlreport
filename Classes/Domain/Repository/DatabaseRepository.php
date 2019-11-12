@@ -1,6 +1,7 @@
 <?php
+declare(strict_types = 1);
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
-    
+
 /*
  * This file is part of the mysqlreport project.
  *
@@ -14,7 +15,7 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Connection;
 
 /**
  * This model saves the mysql status
@@ -32,18 +33,22 @@ class DatabaseRepository extends AbstractRepository
      *
      * @return array
      */
-    public function findProfilingsForCall()
+    public function findProfilingsForCall(): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT crdate, unique_call_identifier, mode, SUM(duration) as duration, COUNT(*) as amount
-            FROM tx_mysqlreport_domain_model_profile
-            GROUP BY unique_call_identifier
-            ORDER BY crdate DESC
-            LIMIT 100;
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $records = $queryBuilder
+            ->selectLiteral('crdate, unique_call_identifier, mode, SUM(duration) as duration, COUNT(*) as amount')
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->groupBy('unique_call_identifier')
+            ->orderBy('crdate', 'DESC')
+            ->setMaxResults(100)
+            ->execute()
+            ->fetchAll();
+        if ($records === false) {
+            $records = [];
+        }
 
-        return $statement->fetchAll();
+        return $records;
     }
 
     /**
@@ -52,18 +57,27 @@ class DatabaseRepository extends AbstractRepository
      * @param string $uniqueIdentifier
      * @return array
      */
-    public function getProfilingByUniqueIdentifier($uniqueIdentifier)
+    public function getProfilingByUniqueIdentifier(string $uniqueIdentifier): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT query_type, unique_call_identifier, SUM(duration) as duration, COUNT(*) as amount
-            FROM tx_mysqlreport_domain_model_profile
-            WHERE unique_call_identifier = "' . $uniqueIdentifier . '"
-            GROUP BY query_type
-            ORDER BY duration DESC;
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $records = $queryBuilder
+            ->selectLiteral('request, query_type, unique_call_identifier, SUM(duration) as duration, COUNT(*) as amount')
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'unique_call_identifier',
+                    $queryBuilder->createNamedParameter($uniqueIdentifier, Connection::PARAM_STR)
+                )
+            )
+            ->groupBy('query_type')
+            ->orderBy('duration', 'DESC')
+            ->execute()
+            ->fetchAll();
+        if ($records === false) {
+            $records = [];
+        }
 
-        return $statement->fetchAll();
+        return $records;
     }
 
     /**
@@ -73,55 +87,84 @@ class DatabaseRepository extends AbstractRepository
      * @param string $queryType
      * @return array
      */
-    public function getProfilingsByQueryType($uniqueIdentifier, $queryType)
+    public function getProfilingsByQueryType(string $uniqueIdentifier, string $queryType): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT uid, query_id, LEFT(query, 120) as query, not_using_index, duration
-            FROM tx_mysqlreport_domain_model_profile
-            WHERE unique_call_identifier = "' . $uniqueIdentifier . '"
-            AND query_type = "' . $queryType . '"
-            ORDER BY duration DESC;
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $records = $queryBuilder
+            ->selectLiteral('uid, query_id, LEFT(query, 120) as query, not_using_index, duration')
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'unique_call_identifier',
+                    $queryBuilder->createNamedParameter($uniqueIdentifier, Connection::PARAM_STR)
+                ),
+                $queryBuilder->expr()->eq(
+                    'query_type',
+                    $queryBuilder->createNamedParameter($queryType, Connection::PARAM_STR)
+                )
+            )
+            ->execute()
+            ->fetchAll();
+        if ($records === false) {
+            $records = [];
+        }
 
-        return $statement->fetchAll();
+        return $records;
     }
 
     /**
-     * get profiling infomation by uid
+     * get profiling information by UID
      *
-     * @param string $uid
+     * @param int $uid
      * @return array
      */
-    public function getProfilingByUid($uid)
+    public function getProfilingByUid(int $uid): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT query, query_type, profile, explain_query, not_using_index, duration
-            FROM tx_mysqlreport_domain_model_profile
-            WHERE uid = ' . $uid . ';
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $record = $queryBuilder
+            ->selectLiteral('query, query_type, profile, explain_query, not_using_index, duration')
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                )
+            )
+            ->execute()
+            ->fetch();
+        if ($record === false) {
+            $record = [];
+        }
 
-        return $statement->fetch();
+        return $record;
     }
 
     /**
-     * find queries using filesort
+     * find queries using FileSort
      *
      * @return array
      */
-    public function findQueriesWithFilesort()
+    public function findQueriesWithFilesort(): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT LEFT(query, 255) as query, explain_query, duration
-            FROM tx_mysqlreport_domain_model_profile
-            WHERE explain_query LIKE "%using filesort%"
-            ORDER BY duration DESC
-            LIMIT 100;
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $records = $queryBuilder
+            ->selectLiteral()
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'explain_query',
+                    $queryBuilder->createNamedParameter('%using filesort%', Connection::PARAM_STR)
+                )
+            )
+            ->orderBy('duration', 'DESC')
+            ->setMaxResults(100)
+            ->execute()
+            ->fetchAll();
+        if ($records === false) {
+            $records = [];
+        }
 
-        return $statement->fetchAll();
+        return $records;
     }
 
     /**
@@ -129,17 +172,26 @@ class DatabaseRepository extends AbstractRepository
      *
      * @return array
      */
-    public function findQueriesWithFullTableScan()
+    public function findQueriesWithFullTableScan(): array
     {
-        $connection = $this->getConnectionPool()->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $statement = $connection->query('
-            SELECT LEFT(query, 255) as query, explain_query, duration
-            FROM tx_mysqlreport_domain_model_profile
-            WHERE using_fulltable = 1
-            ORDER BY duration DESC
-            LIMIT 100;
-        ');
+        $queryBuilder = $this->getConnectionPool()->getQueryBuilderForTable('tx_mysqlreport_domain_model_profile');
+        $records = $queryBuilder
+            ->selectLiteral('LEFT(query, 255) as query, explain_query, duration')
+            ->from('tx_mysqlreport_domain_model_profile')
+            ->where(
+                $queryBuilder->expr()->like(
+                    'using_fulltable',
+                    $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
+                )
+            )
+            ->orderBy('duration', 'DESC')
+            ->setMaxResults(100)
+            ->execute()
+            ->fetchAll();
+        if ($records === false) {
+            $records = [];
+        }
 
-        return $statement->fetchAll();
+        return $records;
     }
 }

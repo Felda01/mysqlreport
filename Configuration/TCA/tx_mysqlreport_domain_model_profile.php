@@ -16,6 +16,12 @@ return [
                 'type' => 'passthrough',
             ],
         ],
+        'request' => [
+            'exclude' => 0,
+            'config' => [
+                'type' => 'passthrough',
+            ],
+        ],
         'mode' => [
             'exclude' => 0,
             'config' => [

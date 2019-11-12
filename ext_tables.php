@@ -3,9 +3,9 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
-if (TYPO3_MODE === 'BE') {
+call_user_func(function($extKey) {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'StefanFroemken.' . $_EXTKEY,
+        'StefanFroemken.' . $extKey,
         'system', // Make module a submodule of 'web'
         'mysql', // Submodule key
         '', // Position
@@ -16,8 +16,8 @@ if (TYPO3_MODE === 'BE') {
         ],
         [
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $_EXTKEY . '/ext_icon.svg',
-            'labels' => 'LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_report.xlf',
+            'icon'   => 'EXT:' . $extKey . '/ext_icon.svg',
+            'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_report.xlf',
         ]
     );
-}
+}, $_EXTKEY);

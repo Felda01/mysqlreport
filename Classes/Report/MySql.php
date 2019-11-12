@@ -16,7 +16,6 @@ namespace StefanFroemken\Mysqlreport\Report;
 
 use StefanFroemken\Mysqlreport\Domain\Model\Report;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -31,22 +30,22 @@ class MySql implements ReportInterface {
      * @var ObjectManager
      */
     protected $objectManager;
-    
+
     /**
      * @var StandaloneView
      */
     protected $view;
-    
+
     /**
      * @var array
      */
     protected $tableInformation = [];
-    
+
     /**
      * @var array
      */
     protected $columns = [];
-    
+
     /**
      * as long as this class was NOT called over ObjectManager we have to implement properties on our own
      */
@@ -55,10 +54,10 @@ class MySql implements ReportInterface {
         /** @var ObjectManager $objectManager */
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $this->view = $objectManager->get(StandaloneView::class);
-        $this->view->setTemplatePathAndFilename(ExtensionManagementUtility::extPath('mysqlreport') . 'Resources/Private/Templates/Reports/List.html');
+        $this->view->setTemplatePathAndFilename('EXT:mysqlreportResources/Private/Templates/Reports/List.html');
         /** @var PageRenderer $pageRenderer */
         $pageRenderer = $objectManager->get(PageRenderer::class);
-        $pageRenderer->addCssFile(ExtensionManagementUtility::extRelPath('mysqlreport') . 'Resources/Public/Css/Main.css');
+        $pageRenderer->addCssFile('EXT:mysqlreport/Resources/Public/Css/Main.css');
         $this->objectManager = $objectManager;
     }
 
@@ -86,7 +85,7 @@ class MySql implements ReportInterface {
             }
         }
         $this->view->assign('reports', $reports);
-        
+
         return $this->view->render();
     }
 
@@ -112,7 +111,7 @@ class MySql implements ReportInterface {
     {
         return $this->tableInformation;
     }
-    
+
     /**
      * Call this method to generate a list of all columns
      */

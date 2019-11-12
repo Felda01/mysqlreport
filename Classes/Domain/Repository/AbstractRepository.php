@@ -1,6 +1,6 @@
 <?php
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
-    
+
 /*
  * This file is part of the mysqlreport project.
  *
@@ -41,7 +41,7 @@ abstract class AbstractRepository
     /**
      * @return ConnectionPool
      */
-    public function getConnectionPool(): ConnectionPool
+    protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);
     }

@@ -49,7 +49,7 @@ class ProfileController extends ActionController
      *
      * @param string $uniqueIdentifier
      */
-    public function showAction($uniqueIdentifier)
+    public function showAction(string $uniqueIdentifier)
     {
         $this->view->assign('profileTypes', $this->databaseRepository->getProfilingByUniqueIdentifier($uniqueIdentifier));
     }
