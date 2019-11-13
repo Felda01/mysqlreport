@@ -16,7 +16,7 @@ call_user_func(function($extKey) {
         ],
         [
             'access' => 'user,group',
-            'icon'   => 'EXT:' . $extKey . '/ext_icon.svg',
+            'icon'   => 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.svg',
             'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_report.xlf',
         ]
     );
