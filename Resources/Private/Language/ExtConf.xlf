@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2019-11-13T19:15:40Z" product-name="mysqlreport">
+		<header/>
+		<body>
+			<trans-unit id="enableProfilingFrontend">
+				<source>Store database queries for frontend requests</source>
+			</trans-unit>
+			<trans-unit id="enableProfilingBackend">
+				<source>Store database queries for backend requests</source>
+			</trans-unit>
+			<trans-unit id="enableQueryExplain">
+				<source>If activated, we will query each database query additionaly with EXPLAIN, to retrieve more information.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
