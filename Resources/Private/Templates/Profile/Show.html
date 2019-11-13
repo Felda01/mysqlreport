@@ -1,4 +1,10 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
 <f:layout name="Default" />
+
+<f:section name="headline">
+	<h1>Show profiles by selected request</h1>
+</f:section>
 
 <f:section name="content">
 	<f:link.action action="list" controller="Profile" class="btn btn-primary">Back</f:link.action>
@@ -19,7 +25,7 @@
 				<tr>
 					<td>{profile.query_type}</td>
 					<td>{profile.amount}</td>
-					<td><f:link.action action="queryType" controller="Profile" arguments="{uniqueIdentifier: profile.unique_call_identifier, queryType: profile.query_type}">{profile.duration}</f:link.action></td>
+					<td><a href="{be:moduleLink(route: 'Profile', arguments: '{action: \'queryType\', uniqueIdentifier: profile.unique_call_identifier, queryType: profile.query_type}')}">{profile.duration}</a></td>
 				</tr>
 			</f:for>
 		</tbody>

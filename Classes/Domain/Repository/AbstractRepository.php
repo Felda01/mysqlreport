@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace StefanFroemken\Mysqlreport\Domain\Repository;
 
 /*
@@ -13,7 +14,6 @@ namespace StefanFroemken\Mysqlreport\Domain\Repository;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
 use StefanFroemken\Mysqlreport\Utility\DataMapper;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,19 +28,11 @@ abstract class AbstractRepository
      */
     protected $dataMapper;
 
-    /**
-     * Inject DataMapper
-     *
-     * @param DataMapper $dataMapper
-     */
     public function injectDataMapper(DataMapper $dataMapper)
     {
         $this->dataMapper = $dataMapper;
     }
 
-    /**
-     * @return ConnectionPool
-     */
     protected function getConnectionPool(): ConnectionPool
     {
         return GeneralUtility::makeInstance(ConnectionPool::class);

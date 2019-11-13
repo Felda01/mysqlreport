@@ -13,27 +13,32 @@ namespace StefanFroemken\Mysqlreport\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use StefanFroemken\Mysqlreport\Domain\Repository\DatabaseRepository;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller to collect logged queries
  */
-class QueryController extends ActionController
+class QueryController extends AbstractController
 {
     /**
-     * @var DatabaseRepository
+     * @var ProfileRepository
      */
-    protected $databaseRepository;
+    protected $profileRepository;
 
     /**
-     * inject databaseRepository
+     * ProfileController constructor.
      *
-     * @param DatabaseRepository $databaseRepository
+     * @param ProfileRepository|null $profileRepository
+     * @param DatabaseRepository|null $databaseRepository
      */
-    public function injectDatabaseRepository(DatabaseRepository $databaseRepository)
+    public function __construct(ProfileRepository $profileRepository = null, DatabaseRepository $databaseRepository = null)
     {
-        $this->databaseRepository = $databaseRepository;
+        parent::__construct($databaseRepository);
+        $this->profileRepository = $profileRepository ?? GeneralUtility::makeInstance(ProfileRepository::class);
     }
 
     /**
@@ -41,7 +46,8 @@ class QueryController extends ActionController
      */
     public function filesortAction()
     {
-        $this->view->assign('queries', $this->databaseRepository->findQueriesWithFilesort());
+        $this->buildHeaderButtons();
+        $this->view->assign('queries', $this->profileRepository->findQueriesWithFilesort());
     }
 
     /**
@@ -49,7 +55,19 @@ class QueryController extends ActionController
      */
     public function fullTableScanAction()
     {
-        $this->view->assign('queries', $this->databaseRepository->findQueriesWithFullTableScan());
+        $this->buildHeaderButtons();
+        $this->view->assign('queries', $this->profileRepository->findQueriesWithFullTableScan());
     }
 
+    /**
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:mysqlreport/Resources/Private/Templates/Query']);
+        $this->view->setPartialRootPaths(['EXT:mysqlreport/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:mysqlreport/Resources/Private/Layouts']);
+    }
 }

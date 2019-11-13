@@ -13,8 +13,6 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-use StefanFroemken\Mysqlreport\Domain\Model\Status;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -39,7 +37,7 @@ class TableCacheViewHelper extends AbstractViewHelper
     {
         $this->registerArgument(
             'status',
-            Status::class,
+            'array',
             'This argument contains all fetched status values of MySQL server',
             true
         );
@@ -65,13 +63,13 @@ class TableCacheViewHelper extends AbstractViewHelper
     /**
      * get amount of opened table definitions each second
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getOpenedTableDefinitionsEachSecond(Status $status)
+    protected function getOpenedTableDefinitionsEachSecond(array $status)
     {
         $result = [];
-        $openedTableDefinitions = $status->getOpenedTableDefinitions() / $status->getUptime();
+        $openedTableDefinitions = $status['opened_table_definitions'] / $status['uptime'];
         if ($openedTableDefinitions <= 0.3) {
             $result['status'] = 'success';
         } elseif ($openedTableDefinitions <= 2) {
@@ -86,13 +84,13 @@ class TableCacheViewHelper extends AbstractViewHelper
     /**
      * get amount of opened tables each second
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getOpenedTablesEachSecond(Status $status)
+    protected function getOpenedTablesEachSecond(array $status)
     {
         $result = [];
-        $openedTables = $status->getOpenedTables() / $status->getUptime();
+        $openedTables = $status['opened_tables'] / $status['uptime'];
         if ($openedTables <= 0.6) {
             $result['status'] = 'success';
         } elseif ($openedTables <= 4) {

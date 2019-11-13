@@ -1,4 +1,10 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
 <f:layout name="Default" />
+
+<f:section name="headline">
+	<h1>Profiling</h1>
+</f:section>
 
 <f:section name="content">
 	<f:if condition="{profiles}">
@@ -18,7 +24,7 @@
 							<td>{profile.crdate -> f:format.date(format: 'd.m.Y H:i:s')}</td>
 							<td>{profile.mode}</td>
 							<td>{profile.amount}</td>
-							<td><f:link.action action="show" controller="Profile" arguments="{uniqueIdentifier: profile.unique_call_identifier}">{profile.duration}</f:link.action></td>
+							<td><a href="{be:moduleLink(route: 'Profile', arguments: '{action: \'show\', uniqueIdentifier: profile.unique_call_identifier}')}">{profile.duration}</a></td>
 						</tr>
 					</f:for>
 				</tbody>

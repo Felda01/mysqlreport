@@ -1,4 +1,10 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
 <f:layout name="Default" />
+
+<f:section name="headline">
+	<h1>Profiles by Query Type</h1>
+</f:section>
 
 <f:section name="content">
 	<f:link.action action="show" controller="Profile" class="btn btn-primary" arguments="{uniqueIdentifier: uniqueIdentifier}">Back</f:link.action>
@@ -17,7 +23,7 @@
 					<td>{profile.query_id}</td>
 					<td>{profile.query}...</td>
 					<td>{profile.not_using_index}</td>
-					<td><f:link.action action="profileInfo" arguments="{uniqueIdentifier: uniqueIdentifier, queryType: queryType, uid: profile.uid}">{profile.duration}</f:link.action></td>
+					<td><a href="{be:moduleLink(route: 'Profile', arguments: '{action: \'profileInfo\', uniqueIdentifier: uniqueIdentifier, queryType: queryType, uid: profile.uid}')}">{profile.duration}</a></td>
 				</tr>
 			</f:for>
 		</tbody>

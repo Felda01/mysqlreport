@@ -13,27 +13,33 @@ namespace StefanFroemken\Mysqlreport\Controller;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Http\Message\ServerRequestInterface;
 use StefanFroemken\Mysqlreport\Domain\Repository\DatabaseRepository;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
+use StefanFroemken\Mysqlreport\Domain\Repository\ProfileRepository;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Controller to collect records with query profile information
  */
-class ProfileController extends ActionController
+class ProfileController extends AbstractController
 {
     /**
-     * @var DatabaseRepository
+     * @var ProfileRepository
      */
-    protected $databaseRepository;
+    protected $profileRepository;
 
     /**
-     * inject databaseRepository
+     * ProfileController constructor.
      *
-     * @param DatabaseRepository $databaseRepository
+     * @param ProfileRepository|null $profileRepository
+     * @param DatabaseRepository|null $databaseRepository
      */
-    public function injectDatabaseRepository(DatabaseRepository $databaseRepository)
+    public function __construct(ProfileRepository $profileRepository = null, DatabaseRepository $databaseRepository = null)
     {
-        $this->databaseRepository = $databaseRepository;
+        parent::__construct($databaseRepository);
+        $this->profileRepository = $profileRepository ?? GeneralUtility::makeInstance(ProfileRepository::class);
     }
 
     /**
@@ -41,46 +47,61 @@ class ProfileController extends ActionController
      */
     public function listAction()
     {
-        $this->view->assign('profiles', $this->databaseRepository->findProfilingsForCall());
+        $this->buildHeaderButtons();
+        $this->view->assign('profiles', $this->profileRepository->findProfilingsForCall());
     }
 
     /**
      * show action
-     *
-     * @param string $uniqueIdentifier
      */
-    public function showAction(string $uniqueIdentifier)
+    public function showAction()
     {
-        $this->view->assign('profileTypes', $this->databaseRepository->getProfilingByUniqueIdentifier($uniqueIdentifier));
+        $this->buildHeaderButtons();
+        $uniqueIdentifier = $this->request->getQueryParams()['uniqueIdentifier'] ?? '';
+        $this->view->assign('profileTypes', $this->profileRepository->getProfilingByUniqueIdentifier($uniqueIdentifier));
     }
 
     /**
      * query type action
-     *
-     * @param string $uniqueIdentifier
-     * @param string $queryType
      */
-    public function queryTypeAction($uniqueIdentifier, $queryType)
+    public function queryTypeAction()
     {
+        $this->buildHeaderButtons();
+        $uniqueIdentifier = $this->request->getQueryParams()['uniqueIdentifier'] ?? '';
+        $queryType = $this->request->getQueryParams()['queryType'] ?? '';
         $this->view->assign('uniqueIdentifier', $uniqueIdentifier);
         $this->view->assign('queryType', $queryType);
-        $this->view->assign('profilings', $this->databaseRepository->getProfilingsByQueryType($uniqueIdentifier, $queryType));
+        $this->view->assign('profilings', $this->profileRepository->getProfilingsByQueryType($uniqueIdentifier, $queryType));
     }
 
     /**
      * profileInfo action
-     *
-     * @param string $uniqueIdentifier
-     * @param string $queryType
-     * @param integer $uid
      */
-    public function profileInfoAction($uniqueIdentifier, $queryType, $uid)
+    public function profileInfoAction()
     {
-        $this->view->assign('uniqueIdentifier', $uniqueIdentifier);
-        $this->view->assign('queryType', $queryType);
-        $profiling = $this->databaseRepository->getProfilingByUid($uid);
+        $this->buildHeaderButtons();
+        $uniqueIdentifier = $this->request->getQueryParams()['uniqueIdentifier'] ?? '';
+        $queryType = $this->request->getQueryParams()['queryType'] ?? '';
+        $uid = $this->request->getQueryParams()['uid'] ?? '';
+
+        $profiling = $this->profileRepository->getProfilingByUid($uid);
         $profiling['profile'] = unserialize($profiling['profile']);
         $profiling['explain'] = unserialize($profiling['explain_query']);
+
+        $this->view->assign('uniqueIdentifier', $uniqueIdentifier);
+        $this->view->assign('queryType', $queryType);
         $this->view->assign('profiling', $profiling);
+    }
+
+    /**
+     * @param string $templateName
+     */
+    protected function initializeView(string $templateName)
+    {
+        $this->view = GeneralUtility::makeInstance(StandaloneView::class);
+        $this->view->setTemplate($templateName);
+        $this->view->setTemplateRootPaths(['EXT:mysqlreport/Resources/Private/Templates/Profile']);
+        $this->view->setPartialRootPaths(['EXT:mysqlreport/Resources/Private/Partials']);
+        $this->view->setLayoutRootPaths(['EXT:mysqlreport/Resources/Private/Layouts']);
     }
 }

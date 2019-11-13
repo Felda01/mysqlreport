@@ -1,4 +1,4 @@
-<f:if condition="{status.uptime}=={status.uptimeSinceFlushStatus}">
+<f:if condition="{status.uptime}=={status.uptime_since_flush_status}">
 	<f:then>
 		<f:if condition="{status.uptime}<21600">
 			<f:then>
@@ -23,7 +23,7 @@
 		</f:if>
 	</f:then>
 	<f:else>
-		<f:if condition="{status.updateSinceFlushStatus}<21600">
+		<f:if condition="{status.update_since_flush_status}<21600">
 			<f:then>
 				<div class="alert alert-danger" role="alert">
 					<strong>Alert!</strong> Your status was resetted within the last 6 hours. It does not make sense to analyze the status variables.
@@ -31,7 +31,7 @@
 				</div>
 			</f:then>
 			<f:else>
-				<f:if condition="{status.updateSinceFlushStatus}<604800">
+				<f:if condition="{status.update_since_flush_status}<604800">
 					<f:then>
 						<div class="alert alert-warning" role="alert">
 							<strong>Warning!</strong> Your status was resetted within the last week. This is maybe OK for a first look to status variables, but it would be much better to have a higher uptime_since_flush_status.

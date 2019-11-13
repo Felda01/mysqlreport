@@ -3,21 +3,18 @@ if (!defined('TYPO3_MODE')) {
     die ('Access denied.');
 }
 
-call_user_func(function($extKey) {
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-        'StefanFroemken.' . $extKey,
-        'system', // Make module a submodule of 'web'
-        'mysql', // Submodule key
-        '', // Position
+call_user_func(function() {
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addModule(
+        'system',
+        'mysqlreport',
+        '',
+        '',
         [
-            'MySql' => 'index, queryCache, innoDbBuffer, threadCache, tableCache, report',
-            'Profile' => 'list, show, queryType, profileInfo',
-            'Query' => 'filesort, fullTableScan',
-        ],
-        [
-            'access' => 'user,group',
-            'icon'   => 'EXT:' . $extKey . '/Resources/Public/Icons/Extension.svg',
-            'labels' => 'LLL:EXT:' . $extKey . '/Resources/Private/Language/locallang_report.xlf',
+            'routeTarget' => \StefanFroemken\Mysqlreport\Controller\ReportController::class . '::handleRequest',
+            'access' => 'group,user',
+            'name' => 'system_mysqlreport',
+            'icon' => 'EXT:mysqlreport/Resources/Public/Icons/Extension.svg',
+            'labels' => 'LLL:EXT:mysqlreport/Resources/Private/Language/locallang_module.xlf'
         ]
     );
-}, $_EXTKEY);
+});

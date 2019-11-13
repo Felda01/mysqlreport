@@ -13,9 +13,6 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-use StefanFroemken\Mysqlreport\Domain\Model\Status;
-use StefanFroemken\Mysqlreport\Domain\Model\Variables;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -40,13 +37,13 @@ class QueryCacheViewHelper extends AbstractViewHelper
     {
         $this->registerArgument(
             'status',
-            Status::class,
+            'array',
             'This argument contains all fetched status values of MySQL server',
             true
         );
         $this->registerArgument(
             'variables',
-            Variables::class,
+            'array',
             'This argument contains all fetched variables of MySQL server',
             true
         );
@@ -81,13 +78,13 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get hit ratio of query cache
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getHitRatio(Status $status)
+    protected function getHitRatio(array $status)
     {
         $result = [];
-        $hitRatio = ($status->getQcacheHits() / ($status->getQcacheHits() + $status->getComSelect())) * 100;
+        $hitRatio = ($status['qcache_hits'] / ($status['qcache_hits'] + $status['com_select'])) * 100;
         if ($hitRatio <= 20) {
             $result['status'] = 'danger';
         } elseif ($hitRatio <= 40) {
@@ -102,13 +99,13 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get insert ratio of query cache
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getInsertRatio(Status $status)
+    protected function getInsertRatio(array $status)
     {
         $result = [];
-        $insertRatio = ($status->getQcacheInserts() / ($status->getQcacheHits() + $status->getComSelect())) * 100;
+        $insertRatio = ($status['qcache_inserts'] / ($status['qcache_hits'] + $status['com_select'])) * 100;
         if ($insertRatio <= 20) {
             $result['status'] = 'success';
         } elseif ($insertRatio <= 40) {
@@ -123,13 +120,13 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get prune ratio of query cache
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getPruneRatio(Status $status)
+    protected function getPruneRatio(array $status)
     {
         $result = [];
-        $pruneRatio = ($status->getQcacheLowmemPrunes() / $status->getQcacheInserts()) * 100;
+        $pruneRatio = ($status['qcache_lowmem_prunes'] / $status['qcache_inserts']) * 100;
         if ($pruneRatio <= 10) {
             $result['status'] = 'success';
         } elseif ($pruneRatio <= 40) {
@@ -144,15 +141,15 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get avg query size in query cache
      *
-     * @param Status $status
-     * @param Variables $variables
+     * @param array $status
+     * @param array $variables
      * @return array
      */
-    protected function getAvgQuerySize(Status $status, Variables $variables)
+    protected function getAvgQuerySize(array $status, array $variables)
     {
         $result = [];
-        $avgQuerySize = $this->getUsedQueryCacheSize($status, $variables) / $status->getQcacheQueriesInCache();
-        if ($avgQuerySize > $variables->getQueryCacheMinResUnit()) {
+        $avgQuerySize = $this->getUsedQueryCacheSize($status, $variables) / $status['qcache_queries_in_cache'];
+        if ($avgQuerySize > $variables['query_cache_min_res_unit']) {
             $result['status'] = 'danger';
         } else {
             $result['status'] = 'success';
@@ -164,26 +161,26 @@ class QueryCacheViewHelper extends AbstractViewHelper
     /**
      * get used query size in bytes
      *
-     * @param Status $status
-     * @param Variables $variables
+     * @param array $status
+     * @param array $variables
      * @return float
      */
-    protected function getUsedQueryCacheSize(Status $status, Variables $variables)
+    protected function getUsedQueryCacheSize(array $status, array $variables)
     {
-        $queryCacheSize = $variables->getQueryCacheSize() - (40 * 1024); // ~40KB are reserved by operating system
-        return $queryCacheSize - $status->getQcacheFreeMemory();
+        $queryCacheSize = $variables['query_cache_size'] - (40 * 1024); // ~40KB are reserved by operating system
+        return $queryCacheSize - $status['qcache_free_memory'];
     }
 
     /**
      * get fragmentation ratio
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getFragmentationRatio(Status $status)
+    protected function getFragmentationRatio(array $status)
     {
         $result = [];
-        $fragmentation = ($status->getQcacheFreeBlocks() / ($status->getQcacheTotalBlocks() / 2)) * 100; // total blocks / 2 = maximum fragmentation
+        $fragmentation = ($status['qcache_free_blocks'] / ($status['qcache_total_blocks'] / 2)) * 100; // total blocks / 2 = maximum fragmentation
         if ($fragmentation <= 15) {
             $result['status'] = 'success';
         } elseif ($fragmentation <= 25) {
@@ -201,14 +198,14 @@ class QueryCacheViewHelper extends AbstractViewHelper
      * Quote from link: Every cached query requires a minimum of two blocks (one for the query text and one or more for the query results).
      *
      * @link: http://dev.mysql.com/doc/refman/5.0/en/query-cache-status-and-maintenance.html
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getAvgUsedBlocks(Status $status)
+    protected function getAvgUsedBlocks(array $status)
     {
         $result = [];
-        $usedBlocks = $status->getQcacheTotalBlocks() - $status->getQcacheFreeBlocks();
-        $minimumUsedBlocks = $status->getQcacheQueriesInCache() * 2; // see link above
+        $usedBlocks = $status['qcache_total_blocks'] - $status['qcache_free_blocks'];
+        $minimumUsedBlocks = $status['qcache_queries_in_cache'] * 2; // see link above
         $avgUsedBlocks = $usedBlocks / $minimumUsedBlocks;
         if ($avgUsedBlocks <= 1.3) {
             $result['status'] = 'very small';

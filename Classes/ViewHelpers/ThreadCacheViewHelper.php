@@ -13,8 +13,6 @@ namespace StefanFroemken\Mysqlreport\ViewHelpers;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
-use StefanFroemken\Mysqlreport\Domain\Model\Status;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -39,7 +37,7 @@ class ThreadCacheViewHelper extends AbstractViewHelper
     {
         $this->registerArgument(
             'status',
-            Status::class,
+            'array',
             'This argument contains all fetched status values of MySQL server',
             true
         );
@@ -64,13 +62,13 @@ class ThreadCacheViewHelper extends AbstractViewHelper
      * get hit ratio of threads cache
      * A ratio nearly 100 would be cool
      *
-     * @param Status $status
+     * @param array $status
      * @return array
      */
-    protected function getHitRatio(Status $status)
+    protected function getHitRatio(array $status)
     {
         $result = [];
-        $hitRatio = 100 - (($status->getThreadsCreated() / $status->getConnections()) * 100);
+        $hitRatio = 100 - (($status['threads_created'] / $status['connections']) * 100);
         if ($hitRatio <= 80) {
             $result['status'] = 'danger';
         } elseif ($hitRatio <= 95) {
